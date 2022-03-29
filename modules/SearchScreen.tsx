@@ -5,6 +5,7 @@ import {
   FlatList,
   Image,
   Pressable,
+  TouchableOpacity,
 } from "react-native";
 import React from "react";
 import styles from "./styles/SearchScreenStyles";
@@ -32,23 +33,27 @@ const ItemCard = ({ item }) => {
   );
 };
 
-const SearchScreen = () => {
+const SearchScreen = ({ navigation }) => {
   return (
     <>
       <StatusBar />
       <View style={styles.body}>
-          <View style={styles.row}>
-            <TextInput placeholder="Search" style={styles.searchBar} />
-              <Pressable>
-                <MaterialIcons name="close" size={18} />
-              </Pressable>
-          </View>
+        <View style={styles.row}>
+          <TextInput placeholder="Search" style={styles.searchBar} />
+            <Pressable>
+              <MaterialIcons name="close" size={18} />
+            </Pressable>
+        </View>
         <FlatList
           columnWrapperStyle={{justifyContent: 'space-between'}}
           contentContainerStyle={styles.flatlist}
           data={DummyLists.itemList}
           numColumns={2}
-          renderItem={({ item }) => <ItemCard item={item} />}
+          renderItem={({ item }) => 
+            <TouchableOpacity onPress={() => navigation.push("Listing", {item: item})}>
+              <ItemCard item={item} />
+            </TouchableOpacity>
+          }
         />
       </View>
     </>
