@@ -1,23 +1,11 @@
-import * as mongoDB from "mongodb"
+import { initializeApp } from 'firebase/app';
 
-class database {
-    constructor() {
-        this.connect();
-    }
-
-    private static uri = 'mongodb://localhost:27018';
-    client = new mongoDB.MongoClient(database.uri);
-
-    async connect() {
-        try {
-            await this.client.connect();
-            console.log("Connected correctly to server");
-        } catch {
-            console.error;
-        }
-    }
-}
-
-var db = new database()
-
-export default db;
+const firebaseConfig = {
+    authDomain: 'mas-food-for-s.firebaseapp.com',
+    databaseURL: 'https://mas-food-for-s.firebaseio.com',
+    projectId: 'mas-food-for-s',
+    storageBucket: 'mas-food-for-s.appspot.com'
+  }
+  
+const app = initializeApp(firebaseConfig);
+export default app;
