@@ -52,6 +52,7 @@ export default function App() {
   set(reference, {
     "user2": "user thingy"
   })
+  console.log(reference.toJSON())
   return (
     <NavigationContainer>
       <RootStack.Navigator>
@@ -66,9 +67,6 @@ export default function App() {
           component={ListingScreen}
         />
       </RootStack.Navigator>
-      <Text>
-        {reference.toJSON()}
-      </Text>
     </NavigationContainer>
   );
 }
