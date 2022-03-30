@@ -43,7 +43,7 @@ const ItemCard = ({ item }: ItemCardTypes) => {
   );
 };
 
-const SearchScreen = ({ navigation }) => {
+const SearchScreen = ({ navigation }: any) => {
   const [list, setFilteredList] = useState(DummyLists.itemList);
   return (
     <>
@@ -71,11 +71,13 @@ const SearchScreen = ({ navigation }) => {
           contentContainerStyle={styles.flatlist}
           data={list}
           numColumns={2}
-          renderItem={({ item }) => 
-            <TouchableOpacity onPress={() => navigation.push("Listing", {item: item})}>
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              onPress={() => navigation.push("Listing", { item: item })}
+            >
               <ItemCard item={item} />
             </TouchableOpacity>
-          }
+          )}
         />
       </View>
     </>
