@@ -48,7 +48,10 @@ const Tabs = () => {
 
 export default function App() {
   const db = getDatabase(app)
-  const reference =  ref(db);
+  const reference =  ref(db, 'users/');
+  set(reference, {
+    "user2": "user thingy"
+  })
   return (
     <NavigationContainer>
       <RootStack.Navigator>
@@ -59,7 +62,7 @@ export default function App() {
         />
       </RootStack.Navigator>
       <Text>
-        {reference.toString()}
+        {reference.toJSON()}
       </Text>
     </NavigationContainer>
   );
