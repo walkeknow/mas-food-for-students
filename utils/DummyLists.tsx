@@ -9,7 +9,12 @@ const DummyLists = {
             university: 'Georgia Tech',
             distance: '0.2 mi',
             tagColor: Colors.yellow,
-            image: Images.bakedBread
+            image: Images.bakedBread,
+            bought: '3/18/2022',
+            expires: '3/31/2022',
+            seller: 'Maisy Davidson',
+            address: 'North Ave Apts.',
+            pickup: '\nMon: 2 pm to 6 pm\nWed: 12 pm to 3 pm\nFri: 10 am to 5 pm'
         },
         {
             id: '2',
@@ -17,7 +22,12 @@ const DummyLists = {
             university: 'Georgia Tech',
             distance: '0.6 mi',
             tagColor: Colors.yellow,
-            image: Images.sandwichBread
+            image: Images.sandwichBread,
+            bought: '3/19/2022',
+            expires: '4/01/2022',
+            seller: 'Gilbert William',
+            address: 'West Village',
+            pickup: '\nMon: 2 pm to 6 pm\nWed: 12 pm to 3 pm\nFri: 10 am to 5 pm'
         },
         {
             id: '3',
@@ -25,7 +35,12 @@ const DummyLists = {
             university: 'Georgia Tech',
             distance: '1.2 mi',
             tagColor: Colors.yellow,
-            image: Images.breadLoaf
+            image: Images.breadLoaf,
+            bought: '3/28/2022',
+            expires: '4/10/2022',
+            seller: 'Chaya James',
+            address: 'Montag',
+            pickup: '\nMon: 2 pm to 6 pm\nWed: 12 pm to 3 pm\nFri: 10 am to 5 pm'
         },
         {
             id: '4',
@@ -33,7 +48,12 @@ const DummyLists = {
             university: 'Georgia State',
             distance: '2.4 mi',
             tagColor: Colors.green,
-            image: Images.sourdoughBread
+            image: Images.sourdoughBread,
+            bought: '3/24/2022',
+            expires: '4/21/2022',
+            seller: 'Carrie Hayden',
+            address: 'Patton Hall',
+            pickup: '\nMon: 2 pm to 6 pm\nWed: 12 pm to 3 pm\nFri: 10 am to 5 pm'
         }
     ]
 }

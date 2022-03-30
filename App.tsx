@@ -1,8 +1,9 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SearchScreen from "./modules/SearchScreen";
+import ListingScreen from "./modules/ListingScreen";
 import Colors from "./theme/Colors";
 import { RootStackParamList } from "./utils/types";
 import app from "./lib/db"
@@ -10,15 +11,14 @@ import { getDatabase, ref, onValue, set } from 'firebase/database';
 import { Text } from "react-native"
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
-const Tab = createMaterialBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
 const Tabs = () => {
   return (
     <Tab.Navigator
-      barStyle={{ backgroundColor: Colors.primaryBlue }}
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused }) => {
-          let iconName = "";
+          let iconName = "search";
           if (route.name === "Search") {
             iconName = "search";
           } else if (route.name === "Give") {
@@ -34,12 +34,12 @@ const Tabs = () => {
             />
           );
         },
-        tabBarActiveTintColor: Colors.yellow,
         headerTransparent: true,
-        headerTitle: "",
+        tabBarActiveTintColor: Colors.yellow,
+        tabBarStyle: { backgroundColor: Colors.primaryBlue },
       })}
     >
-      <Tab.Screen name="Search" component={SearchScreen} />
+      <Tab.Screen options={{}} name="Search" component={SearchScreen} />
       <Tab.Screen name="Give" component={SearchScreen} />
       <Tab.Screen name="Profile" component={SearchScreen} />
     </Tab.Navigator>
@@ -59,6 +59,11 @@ export default function App() {
           options={{ headerTransparent: true, headerTitle: "" }}
           name="Root"
           component={Tabs}
+        />
+        <RootStack.Screen
+          options={{ headerTransparent: true, headerTitle: "" }}
+          name="Listing"
+          component={ListingScreen}
         />
       </RootStack.Navigator>
       <Text>
