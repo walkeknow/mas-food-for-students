@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SearchScreen from "./modules/SearchScreen";
+import ListingScreen from "./modules/ListingScreen";
 import Colors from "./theme/Colors";
 import { RootStackParamList } from "./utils/types";
 
@@ -50,6 +51,11 @@ export default function App() {
           options={{ headerTransparent: true, headerTitle: "" }}
           name="Root"
           component={Tabs}
+        />
+        <RootStack.Screen
+          options={{ headerTransparent: true, headerTitle: "" }}
+          name="Listing"
+          component={ListingScreen}
         />
       </RootStack.Navigator>
     </NavigationContainer>

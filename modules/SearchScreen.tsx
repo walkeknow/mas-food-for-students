@@ -5,6 +5,7 @@ import {
   FlatList,
   Image,
   Pressable,
+  TouchableOpacity,
   ImageSourcePropType,
 } from "react-native";
 import React, { useState } from "react";
@@ -42,7 +43,7 @@ const ItemCard = ({ item }: ItemCardTypes) => {
   );
 };
 
-const SearchScreen = () => {
+const SearchScreen = ({ navigation }) => {
   const [list, setFilteredList] = useState(DummyLists.itemList);
   return (
     <>
@@ -70,7 +71,11 @@ const SearchScreen = () => {
           contentContainerStyle={styles.flatlist}
           data={list}
           numColumns={2}
-          renderItem={({ item }) => <ItemCard item={item} />}
+          renderItem={({ item }) => 
+            <TouchableOpacity onPress={() => navigation.push("Listing", {item: item})}>
+              <ItemCard item={item} />
+            </TouchableOpacity>
+          }
         />
       </View>
     </>

@@ -3,7 +3,9 @@ const Colors = {
     lightBrown: '#CABDAF',
     yellow: '#E2C548',
     green: '#72C176',
-    white: '#FFFFFF'
+    white: '#FFFFFF',
+    gold: '#B3A369',
+    black: '#343434'
 }
 
 export default Colors
