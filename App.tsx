@@ -4,6 +4,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SearchScreen from "./modules/SearchScreen";
 import ListingScreen from "./modules/ListingScreen";
+import LoginScreen from "./modules/authentication/LoginScreen";
+import LandingScreen from "./modules/Landing Screen";
 import Colors from "./theme/Colors";
 import { RootStackParamList } from "./utils/types";
 import app from "./lib/db"
@@ -65,6 +67,16 @@ export default function App() {
           options={{ headerTransparent: true, headerTitle: "" }}
           name="Listing"
           component={ListingScreen}
+        />
+        <RootStack.Screen
+          options={{ headerTransparent: true, headerTitle: "" }}
+          name="Login"
+          component={LoginScreen}
+        />
+        <RootStack.Screen
+          options={{ headerTransparent: true, headerTitle: "" }}
+          name="Landing"
+          component={LandingScreen}
         />
       </RootStack.Navigator>
     </NavigationContainer>
