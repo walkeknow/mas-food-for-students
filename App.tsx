@@ -68,11 +68,11 @@ export default function App() {
           name="Listing"
           component={ListingScreen}
         />
-        <RootStack.Screen
+        {/* <RootStack.Screen
           options={{ headerTransparent: true, headerTitle: "" }}
           name="Login"
           component={LoginScreen}
-        />
+        /> */}
         <RootStack.Screen
           options={{ headerTransparent: true, headerTitle: "" }}
           name="Landing"

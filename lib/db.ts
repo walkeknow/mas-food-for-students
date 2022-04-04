@@ -1,9 +1,9 @@
 import { initializeApp, getApp, getApps } from 'firebase/app';
 import { getDatabase } from 'firebase/database'
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
+import { getAuth } from 'firebase/auth'
 
 const firebaseConfig = {
+    apiKey: 'AIzaSyAxpJhPDq3hepF_FMMbh__qtVb-oRMSHmk',
     authDomain: 'mas-food-for-s-default-rtdb.firebaseapp.com',
     databaseURL: 'https://mas-food-for-s-default-rtdb.firebaseio.com/',
     projectId: 'mas-food-for-s-default-rtdb',
@@ -11,14 +11,13 @@ const firebaseConfig = {
 }
 
 var app
-//var appAuthTemp
 if (!getApps().length) {
-    app = initializeApp(firebaseConfig);
-    //appAuthTemp = firebase.auth();
- } else {
-    app = getApp();
- }
-const db = gtDatabase(app)
+   app = initializeApp(firebaseConfig);
+} else {
+   app = getApp();
+}
 
-export const appAuth = firebase.auth();
+const db = getDatabase(app)
+
+export const appAuth = getAuth(app);
 export default db;

@@ -8,7 +8,7 @@ import {
  TextInput,
  View
 } from "react-native";
-import { appAuth } from "../../lib/db";
+import appAuth from "../../lib/db";
 import styles from "../styles/LoginScreenStyles";
 
 const emailRef = useRef<HTMLInputElement>(null);
@@ -30,18 +30,18 @@ const LoginScreen = ({ navigation }: any) => {
                         title = "Login"
                         onPress = { async () => {
                                 try {
-                                    await appAuth.signInWithEmailAndPassword(
-                                        emailRef.current!.value,
-                                        passwordRef.current!.value
-                                    );
-                                    navigation.navigate("Root");
+                                    // await appAuth.signInWithEmailAndPassword(
+                                    //     emailRef.current!.value,
+                                    //     passwordRef.current!.value
+                                    // );
+                                    // navigation.navigate("Root");
                                 } catch (error) {
                                     console.log(error);
-                                    Alert.alert(
-                                        "Login Error",
-                                        "Login Failed. Please try again.",
-                                        [ { text: "OK" } ]
-                                    )
+                                    // Alert.alert(
+                                    //     "Login Error",
+                                    //     "Login Failed. Please try again.",
+                                    //     [ { text: "OK" } ]
+                                    // )
                                 }
                             }
                         }
