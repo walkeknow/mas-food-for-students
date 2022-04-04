@@ -1,4 +1,5 @@
 import { initializeApp, getApp, getApps } from 'firebase/app';
+import { getDatabase } from 'firebase/database'
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 
@@ -9,17 +10,15 @@ const firebaseConfig = {
     storageBucket: 'mas-food-for-s-default-rtdb.appspot.com'
 }
 
-/*
-var temp
-var appAuthTemp
+var app
+//var appAuthTemp
 if (!getApps().length) {
-    temp = initializeApp(firebaseConfig);
-    appAuthTemp = firebase.auth();
+    app = initializeApp(firebaseConfig);
+    //appAuthTemp = firebase.auth();
  } else {
-    temp = getApp();
+    app = getApp();
  }
-const app = temp
-*/
-var app = initializeApp(firebaseConfig);
+const db = gtDatabase(app)
+
 export const appAuth = firebase.auth();
-export default app;
+export default db;
