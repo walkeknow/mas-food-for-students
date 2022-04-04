@@ -8,8 +8,8 @@ import LoginScreen from "./modules/authentication/LoginScreen";
 import LandingScreen from "./modules/Landing Screen";
 import Colors from "./theme/Colors";
 import { RootStackParamList } from "./utils/types";
-import app from "./lib/db"
-import { getDatabase, ref, onValue, set } from 'firebase/database';
+import db from "./lib/db"
+import { getDatabase, ref, onValue, set, get } from 'firebase/database';
 import { Text } from "react-native"
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -49,12 +49,12 @@ const Tabs = () => {
 };
 
 export default function App() {
-  const db = getDatabase(app)
   const reference =  ref(db, 'users/');
   set(reference, {
     "user2": "user thingy"
   })
-  console.log(reference.toJSON())
+  const temp = get(reference)
+  console.log(temp)
   return (
     <NavigationContainer>
       <RootStack.Navigator>
