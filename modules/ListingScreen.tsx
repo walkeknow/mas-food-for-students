@@ -69,25 +69,27 @@ const ListingScreen = ({ navigation, route }: any) => {
       <View style={styles.body}>
         <ListingCard item={route.params.item} />
       </View>
-      <Button
-        title="Request"
-        onPress={() =>
-          Alert.alert(
-            "Request success!",
-            "You will be notified when " +
-              route.params.item.seller +
-              " approves!",
-            [
-              {
-                text: "Return Home",
-                onPress: () => navigation.navigate("Root"),
-                style: "cancel",
-              },
-              { text: "OK" },
-            ]
-          )
-        }
-      ></Button>
+      <View style={styles.buttonbody}>
+        <Button
+          title="Request"
+          onPress={() =>
+            Alert.alert(
+              "Request success!",
+              "You will be notified when " +
+                route.params.item.seller +
+                " approves!",
+              [
+                {
+                  text: "Return Home",
+                  onPress: () => navigation.navigate("Root"),
+                  style: "cancel",
+                },
+                { text: "OK" },
+              ]
+            )
+          }
+        ></Button>
+      </View>
     </>
   );
 };

@@ -13,6 +13,7 @@ import styles from "./styles/SearchScreenStyles";
 import DummyLists from "../utils/DummyLists";
 import { StatusBar } from "expo-status-bar";
 import { MaterialIcons } from "@expo/vector-icons";
+import { FAB } from 'react-native-elements';
 
 type ItemCardTypes = {
   item: {
@@ -79,6 +80,7 @@ const SearchScreen = ({ navigation }: any) => {
             </TouchableOpacity>
           )}
         />
+        <FAB title="+" placement="right" onPress={() => navigation.push("CreateListing")}/>
       </View>
     </>
   );

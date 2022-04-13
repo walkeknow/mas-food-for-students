@@ -9,6 +9,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     paddingVertical: 60,
   },
+  buttonbody: {
+    backgroundColor: Colors.lightBrown,
+    paddingLeft: 200,
+    paddingBottom: 50,
+    paddingRight: 50
+  },
   row: {
     flexDirection: "row",
     alignSelf: "stretch",
@@ -92,8 +98,8 @@ const styles = StyleSheet.create({
     flexDirection:'row',
   },
   tag: {
-      flexShrink: 1,
-      borderRadius: 10
+    flexShrink: 1,
+    borderRadius: 10
   },
   tagText: {
     paddingVertical: 2,

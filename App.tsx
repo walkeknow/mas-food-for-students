@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SearchScreen from "./modules/SearchScreen";
 import ListingScreen from "./modules/ListingScreen";
+import CreateListingScreen from "./modules/CreateListingScreen";
 import Colors from "./theme/Colors";
 import { RootStackParamList } from "./utils/types";
 import app from "./lib/db"
@@ -65,6 +66,11 @@ export default function App() {
           options={{ headerTransparent: true, headerTitle: "" }}
           name="Listing"
           component={ListingScreen}
+        />
+        <RootStack.Screen
+          options={{ headerTransparent: true, headerTitle: "" }}
+          name="CreateListing"
+          component={CreateListingScreen}
         />
       </RootStack.Navigator>
     </NavigationContainer>
