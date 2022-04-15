@@ -16,6 +16,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { ItemCardTypes } from "../utils/types"
 import app from "../lib/db"
 import { getDatabase, ref, onValue, set } from 'firebase/database';
+import { FAB } from 'react-native-elements';
 
 // TEMP: Need to change after image storage
 import Images from "../assets/placeholder"
@@ -91,6 +92,7 @@ const SearchScreen = ({ navigation }: any) => {
             </TouchableOpacity>
           )}
         />
+        <FAB title="+" placement="right" onPress={() => navigation.push("CreateListing")}/>
       </View>
     </>
   );
