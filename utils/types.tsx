@@ -6,3 +6,18 @@ export type RootStackParamList = {
   Search: undefined;
   Listing: undefined;
 };
+
+export type ItemCardTypes = {
+  item: {
+    name: string;
+    image: ImageSourcePropType;
+    distance: string;
+    tagColor: string;
+    university: string;
+    address: string;
+    pickup: string;
+    bought: string;
+    expires: string;
+    seller: string;
+  };
+};

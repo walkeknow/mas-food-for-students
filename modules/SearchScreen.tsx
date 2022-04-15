@@ -13,16 +13,12 @@ import styles from "./styles/SearchScreenStyles";
 import DummyLists from "../utils/DummyLists";
 import { StatusBar } from "expo-status-bar";
 import { MaterialIcons } from "@expo/vector-icons";
+import { ItemCardTypes } from "../utils/types"
+import app from "../lib/db"
+import { getDatabase, ref, onValue, set } from 'firebase/database';
 
-type ItemCardTypes = {
-  item: {
-    name: string;
-    image: ImageSourcePropType;
-    distance: string;
-    tagColor: string;
-    university: string;
-  };
-};
+// TEMP: Need to change after image storage
+import Images from "../assets/placeholder"
 
 const ItemCard = ({ item }: ItemCardTypes) => {
   return (
@@ -44,7 +40,23 @@ const ItemCard = ({ item }: ItemCardTypes) => {
 };
 
 const SearchScreen = ({ navigation }: any) => {
-  const [list, setFilteredList] = useState(DummyLists.itemList);
+  var item_arr : Array<ItemCardTypes["item"]> = []
+
+  const db = getDatabase(app)
+  const reference =  ref(db, 'food_listings/');
+
+  // TODO: Change once image storage
+  onValue(reference, (snapshot) => {
+    snapshot.forEach(function(child) {
+      var curr_item : ItemCardTypes["item"] = child.val()
+      curr_item.image = Images.bakedBread
+
+      item_arr.push(curr_item)
+    })
+  })
+  
+  const [list, setFilteredList] = useState(item_arr);
+
   return (
     <>
       <StatusBar />
@@ -53,7 +65,7 @@ const SearchScreen = ({ navigation }: any) => {
           <TextInput
             onChangeText={(text) => {
               setFilteredList(() => {
-                const tempList = DummyLists.itemList.filter((item) =>
+                const tempList = item_arr.filter((item) =>
                   item.name.includes(text)
                 );
                 return tempList;
