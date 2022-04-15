@@ -54,7 +54,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     padding: 8,
     justifyContent: 'space-between',
-    paddingBottom: 16
+    paddingBottom: 16,
+    maxWidth: 300
   },
   cardTopName: {
     flexDirection: "row",
