@@ -9,21 +9,7 @@ import {
   View
 } from "react-native";
 import styles from "./styles/ListingScreenStyles";
-
-type ItemCardTypes = {
-  item: {
-    name: string;
-    image: ImageSourcePropType;
-    distance: string;
-    tagColor: string;
-    university: string;
-    address: string;
-    pickup: string;
-    bought: string;
-    expires: string;
-    seller: string;
-  };
-};
+import { ItemCardTypes } from "../utils/types";
 
 const ListingCard = ({ item }: ItemCardTypes) => {
   return (
@@ -63,33 +49,33 @@ const ListingCard = ({ item }: ItemCardTypes) => {
 };
 
 const ListingScreen = ({ navigation, route }: any) => {
+  const item = route.params.item
+
   return (
     <>
       <StatusBar />
       <View style={styles.body}>
-        <ListingCard item={route.params.item} />
+        <ListingCard item={item} />
       </View>
-      <View style={styles.buttonbody}>
-        <Button
-          title="Request"
-          onPress={() =>
-            Alert.alert(
-              "Request success!",
-              "You will be notified when " +
-                route.params.item.seller +
-                " approves!",
-              [
-                {
-                  text: "Return Home",
-                  onPress: () => navigation.navigate("Root"),
-                  style: "cancel",
-                },
-                { text: "OK" },
-              ]
-            )
-          }
-        ></Button>
-      </View>
+      <Button
+        title="Request"
+        onPress={() =>
+          Alert.alert(
+            "Request success!",
+            "You will be notified when " +
+              item.seller +
+              " approves!",
+            [
+              {
+                text: "Return Home",
+                onPress: () => navigation.navigate("Root"),
+                style: "cancel",
+              },
+              { text: "OK" },
+            ]
+          )
+        }
+      ></Button>
     </>
   );
 };

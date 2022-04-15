@@ -7,9 +7,6 @@ import ListingScreen from "./modules/ListingScreen";
 import CreateListingScreen from "./modules/CreateListingScreen";
 import Colors from "./theme/Colors";
 import { RootStackParamList } from "./utils/types";
-import app from "./lib/db"
-import { getDatabase, ref, onValue, set } from 'firebase/database';
-import { Text } from "react-native"
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
@@ -48,12 +45,6 @@ const Tabs = () => {
 };
 
 export default function App() {
-  const db = getDatabase(app)
-  const reference =  ref(db, 'users/');
-  set(reference, {
-    "user2": "user thingy"
-  })
-  console.log(reference.toJSON())
   return (
     <NavigationContainer>
       <RootStack.Navigator>
