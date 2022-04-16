@@ -2,13 +2,13 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import SearchScreen from "./modules/SearchScreen";
+import { getDatabase, ref, set } from "firebase/database";
+import app from "./lib/db";
 import ListingScreen from "./modules/ListingScreen";
+import ViewProfileScreen from "./modules/profile/ViewProfileScreen";
+import SearchScreen from "./modules/SearchScreen";
 import Colors from "./theme/Colors";
 import { RootStackParamList } from "./utils/types";
-import app from "./lib/db"
-import { getDatabase, ref, onValue, set } from 'firebase/database';
-import { Text } from "react-native"
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
@@ -41,18 +41,18 @@ const Tabs = () => {
     >
       <Tab.Screen options={{}} name="Search" component={SearchScreen} />
       <Tab.Screen name="Give" component={SearchScreen} />
-      <Tab.Screen name="Profile" component={SearchScreen} />
+      <Tab.Screen name="Profile" component={ViewProfileScreen} />
     </Tab.Navigator>
   );
 };
 
 export default function App() {
-  const db = getDatabase(app)
-  const reference =  ref(db, 'users/');
+  const db = getDatabase(app);
+  const reference = ref(db, "users/");
   set(reference, {
-    "user2": "user thingy"
-  })
-  console.log(reference.toJSON())
+    user2: "user thingy",
+  });
+  console.log(reference.toJSON());
   return (
     <NavigationContainer>
       <RootStack.Navigator>
