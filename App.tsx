@@ -7,6 +7,7 @@ import app from "./lib/db";
 import ListingScreen from "./modules/ListingScreen";
 import ViewProfileScreen from "./modules/profile/ViewProfileScreen";
 import SearchScreen from "./modules/SearchScreen";
+import CreateListingScreen from "./modules/CreateListingScreen";
 import Colors from "./theme/Colors";
 import { RootStackParamList } from "./utils/types";
 
@@ -65,6 +66,11 @@ export default function App() {
           options={{ headerTransparent: true, headerTitle: "" }}
           name="Listing"
           component={ListingScreen}
+        />
+        <RootStack.Screen
+          options={{ headerTransparent: true, headerTitle: "" }}
+          name="CreateListing"
+          component={CreateListingScreen}
         />
       </RootStack.Navigator>
     </NavigationContainer>
