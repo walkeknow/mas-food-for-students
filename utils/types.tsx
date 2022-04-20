@@ -11,7 +11,7 @@ export type RootStackParamList = {
 export type ItemCardTypes = {
   item: {
     name: string;
-    image: ImageSourcePropType;
+    image: string;
     distance: string;
     tagColor: string;
     university: string;
@@ -20,5 +20,6 @@ export type ItemCardTypes = {
     bought: string;
     expires: string;
     seller: string;
+    id: number
   };
 };

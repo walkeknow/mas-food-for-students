@@ -2,7 +2,6 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { getDatabase, ref, set } from "firebase/database";
 import app from "./lib/db";
 import ListingScreen from "./modules/ListingScreen";
 import ViewProfileScreen from "./modules/profile/ViewProfileScreen";
@@ -48,12 +47,6 @@ const Tabs = () => {
 };
 
 export default function App() {
-  const db = getDatabase(app);
-  const reference = ref(db, "users/");
-  set(reference, {
-    user2: "user thingy",
-  });
-  console.log(reference.toJSON());
   return (
     <NavigationContainer>
       <RootStack.Navigator>

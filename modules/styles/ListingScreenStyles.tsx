@@ -40,6 +40,8 @@ const styles = StyleSheet.create({
     maxHeight: 200,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
+    width: 300,
+    height: 200
   },
   cardDescription: {
     backgroundColor: Colors.primaryBlue,
