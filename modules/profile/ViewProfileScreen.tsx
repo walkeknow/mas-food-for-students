@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, Image } from "react-native";
+import { View, Text, SafeAreaView, Image, Pressable } from "react-native";
 import React from "react";
 import styles from "./styles/ViewProfileScreenStyles";
 import Images from "../../assets";
@@ -7,14 +7,21 @@ import Colors from "../../theme/Colors";
 import Label from "./components/Label";
 import InputField from "./components/InputField";
 import AppButton from "../../components/AppButton";
+import { useNavigation } from "@react-navigation/native";
+import { ProfileStackParamList } from "../../utils/types";
+import { useProfileNavigation } from "../../utils/hooks";
 
 const ViewProfileScreen = () => {
+  const navigation = useProfileNavigation();
+
   return (
     <View style={styles.body}>
       <View style={styles.blueHeader} />
 
       <View style={styles.content}>
-        <Text style={styles.editButton}>Edit</Text>
+        <Pressable onPress={() => navigation.navigate("EditProfileScreen")}>
+          <Text style={styles.editButton}>Edit</Text>
+        </Pressable>
         <Rating
           style={styles.rating}
           imageSize={30}
@@ -22,9 +29,14 @@ const ViewProfileScreen = () => {
         />
         <View style={styles.form}>
           <Label>Name</Label>
-          <InputField style={styles.inputField} value={"Brenda Williams"} />
+          <InputField
+            editable={false}
+            style={styles.inputField}
+            value={"Brenda Williams"}
+          />
           <Label style={styles.label}>Address</Label>
           <InputField
+            editable={false}
             multiline
             style={[styles.inputField, styles.adressInput]}
             value={"812 Peachtree St. NW, Atlanta GA. 30302"}

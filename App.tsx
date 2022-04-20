@@ -4,15 +4,40 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { getDatabase, ref, set } from "firebase/database";
 import app from "./lib/db";
+import CreateListingScreen from "./modules/CreateListingScreen";
 import ListingScreen from "./modules/ListingScreen";
+import EditProfileScreen from "./modules/profile/EditProfileScreen";
 import ViewProfileScreen from "./modules/profile/ViewProfileScreen";
 import SearchScreen from "./modules/SearchScreen";
-import CreateListingScreen from "./modules/CreateListingScreen";
 import Colors from "./theme/Colors";
-import { RootStackParamList } from "./utils/types";
+import { ProfileStackParamList, RootStackParamList } from "./utils/types";
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
+const ProfileStack = createNativeStackNavigator<ProfileStackParamList>();
+
+const ProfileStackScreens = () => {
+  return (
+    <ProfileStack.Navigator>
+      <ProfileStack.Screen
+        name={"ViewProfileScreen"}
+        options={{ title: "Profile", headerShown: false }}
+        component={ViewProfileScreen}
+      />
+      <ProfileStack.Screen
+        name={"EditProfileScreen"}
+        options={{
+          title: "Edit Profile",
+          headerStyle: { backgroundColor: Colors.primaryBlue },
+          headerTintColor: Colors.yellow,
+          headerTitleAlign: "center",
+          headerShadowVisible: false,
+        }}
+        component={EditProfileScreen}
+      />
+    </ProfileStack.Navigator>
+  );
+};
 
 const Tabs = () => {
   return (
@@ -42,7 +67,7 @@ const Tabs = () => {
     >
       <Tab.Screen options={{}} name="Search" component={SearchScreen} />
       <Tab.Screen name="Give" component={SearchScreen} />
-      <Tab.Screen name="Profile" component={ViewProfileScreen} />
+      <Tab.Screen name="Profile" component={ProfileStackScreens} />
     </Tab.Navigator>
   );
 };

@@ -12,7 +12,7 @@ const styles = ScaledSheet.create({
     backgroundColor: Colors.primaryBlue,
   },
   blueHeader: {
-    height: "157@vs",
+    height: verticalScale(65),
     backgroundColor: Colors.primaryBlue,
   },
   content: {
@@ -23,7 +23,7 @@ const styles = ScaledSheet.create({
     position: "absolute",
     left: 0,
     right: 0,
-    top: "88@vs",
+    top: 0,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -47,7 +47,7 @@ const styles = ScaledSheet.create({
   },
   form: {
     paddingHorizontal: scale(49),
-    marginTop: "20@vs",
+    marginTop: verticalScale(40),
   },
   logo: {
     position: "absolute",
@@ -58,7 +58,7 @@ const styles = ScaledSheet.create({
   },
   rating: { marginTop: -10 },
   label: {
-    marginTop: verticalScale(30),
+    marginTop: verticalScale(20),
   },
   inputField: {
     marginTop: 11,
