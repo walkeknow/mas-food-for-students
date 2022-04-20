@@ -11,6 +11,8 @@ import {
 } from "react-native";
 import styles from "./styles/CreateListingScreenStyles";
 import { FAB } from 'react-native-elements';
+import { getDatabase, ref, onValue, set, get, child } from 'firebase/database';
+import app from "../lib/db"
 
 const CreateListingScreen = ({ navigation, route }: any) => {
   const [name, setName] = useState('');
@@ -47,6 +49,8 @@ const CreateListingScreen = ({ navigation, route }: any) => {
     setFormatExpire(fDate);
     setTextExpire('Expires:\n' + fDate);
   }
+
+  const db = getDatabase(app)
 
   return (
     <>
@@ -121,6 +125,39 @@ const CreateListingScreen = ({ navigation, route }: any) => {
               ]
             )
           } else {
+            const id_ref = ref(db, '/global_id');
+            get(id_ref).then((snapshot) => {
+              if (snapshot.exists()) {
+                let id: number = snapshot.val();
+                set(id_ref, id + 1);
+                const listing_ref = ref(db, 'food_listings/id_' + id);
+                set(listing_ref, {
+                  address: address,
+                  bought: formatBought,
+                  // TODO: get distance somehow
+                  distance: "? mi",
+                  expires: formatExpire,
+                  id: id,
+                  name: name,
+                  pickup: '\n' + pickup,
+                  // TODO: get the current user's name
+                  seller: "?",
+                  tagColor: "#FFFFFF",
+                  university: university
+                });
+              } else {
+                return Alert.alert(
+                  "Failed to retrive item id!",
+                  "You can try again.",
+                  [
+                    {
+                      text: "Try again",
+                    }
+                  ]
+                )
+              }
+            })
+
             return Alert.alert(
               "Successfully posted listing!",
               "You can return home now.",
