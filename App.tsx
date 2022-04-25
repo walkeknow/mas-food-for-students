@@ -2,7 +2,9 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import SearchScreen from "./modules/SearchScreen";
+import { getDatabase, ref, set } from "firebase/database";
+import app from "./lib/db";
+import CreateListingScreen from "./modules/CreateListingScreen";
 import ListingScreen from "./modules/ListingScreen";
 import LoginScreen from "./modules/authentication/LoginScreen";
 import LandingScreen from "./modules/Landing Screen";
@@ -11,9 +13,38 @@ import { RootStackParamList } from "./utils/types";
 import db from "./lib/db"
 import { getDatabase, ref, onValue, set, get } from 'firebase/database';
 import { Text } from "react-native"
+import EditProfileScreen from "./modules/profile/EditProfileScreen";
+import ViewProfileScreen from "./modules/profile/ViewProfileScreen";
+import SearchScreen from "./modules/SearchScreen";
+import Colors from "./theme/Colors";
+import { ProfileStackParamList, RootStackParamList } from "./utils/types";
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
+const ProfileStack = createNativeStackNavigator<ProfileStackParamList>();
+
+const ProfileStackScreens = () => {
+  return (
+    <ProfileStack.Navigator>
+      <ProfileStack.Screen
+        name={"ViewProfileScreen"}
+        options={{ title: "Profile", headerShown: false }}
+        component={ViewProfileScreen}
+      />
+      <ProfileStack.Screen
+        name={"EditProfileScreen"}
+        options={{
+          title: "Edit Profile",
+          headerStyle: { backgroundColor: Colors.primaryBlue },
+          headerTintColor: Colors.yellow,
+          headerTitleAlign: "center",
+          headerShadowVisible: false,
+        }}
+        component={EditProfileScreen}
+      />
+    </ProfileStack.Navigator>
+  );
+};
 
 const Tabs = () => {
   return (
@@ -43,18 +74,18 @@ const Tabs = () => {
     >
       <Tab.Screen options={{}} name="Search" component={SearchScreen} />
       <Tab.Screen name="Give" component={SearchScreen} />
-      <Tab.Screen name="Profile" component={SearchScreen} />
+      <Tab.Screen name="Profile" component={ProfileStackScreens} />
     </Tab.Navigator>
   );
 };
 
 export default function App() {
-  const reference =  ref(db, 'users/');
+  const db = getDatabase(app);
+  const reference = ref(db, "users/");
   set(reference, {
-    "user2": "user thingy"
-  })
-  const temp = get(reference)
-  console.log(temp)
+    user2: "user thingy",
+  });
+  console.log(reference.toJSON());
   return (
     <NavigationContainer>
       <RootStack.Navigator>
@@ -68,15 +99,10 @@ export default function App() {
           name="Listing"
           component={ListingScreen}
         />
-        {/* <RootStack.Screen
-          options={{ headerTransparent: true, headerTitle: "" }}
-          name="Login"
-          component={LoginScreen}
-        /> */}
         <RootStack.Screen
           options={{ headerTransparent: true, headerTitle: "" }}
-          name="Landing"
-          component={LandingScreen}
+          name="CreateListing"
+          component={CreateListingScreen}
         />
       </RootStack.Navigator>
     </NavigationContainer>

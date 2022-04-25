@@ -1,10 +1,30 @@
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {ImageSourcePropType} from 'react-native';
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { ImageSourcePropType } from "react-native";
+
 
 export type RootStackParamList = {
-  Root: undefined
+  Root: undefined;
   Search: undefined;
   Listing: undefined;
-  Login: undefined;
-  Landing: undefined;
+  CreateListing: undefined;
+};
+
+export type ProfileStackParamList = {
+  ViewProfileScreen: undefined;
+  EditProfileScreen: undefined
+};
+
+export type ItemCardTypes = {
+  item: {
+    name: string;
+    image: ImageSourcePropType;
+    distance: string;
+    tagColor: string;
+    university: string;
+    address: string;
+    pickup: string;
+    bought: string;
+    expires: string;
+    seller: string;
+  };
 };

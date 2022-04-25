@@ -5,7 +5,9 @@ const Colors = {
     green: '#72C176',
     white: '#FFFFFF',
     gold: '#B3A369',
-    black: '#343434'
+    black: '#343434',
+    whiteInput: '#e5e5e5',
+    shadow: 'rgba(0, 0, 0, 0.25)'
 }
 
 export default Colors
