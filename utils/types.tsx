@@ -26,6 +26,12 @@ export type ItemCardTypes = {
     bought: string;
     expires: string;
     seller: string;
+    seller_id: string;
     id: number
   };
+};
+
+export type RequestCardTypes = {
+  item: ItemCardTypes["item"];
+  state: string;
 };

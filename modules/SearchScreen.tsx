@@ -19,9 +19,6 @@ import { getDatabase, ref as dRef, get, onValue, DataSnapshot } from 'firebase/d
 import { getStorage, ref as sRef, getDownloadURL } from 'firebase/storage';
 import { FAB } from 'react-native-elements';
 
-// TEMP: Need to change after image storage
-import Images from "../assets/placeholder"
-
 const ItemCard = ({ item }: ItemCardTypes) => {
   return (
     <View style={styles.card}>
@@ -42,15 +39,15 @@ const ItemCard = ({ item }: ItemCardTypes) => {
 };
 
 const SearchScreen = ({ navigation }: any) => {
-  const [list, setFilteredList] = useState(null);
-  const [mlist, setMasterList] = useState(null);
+  const [list, setFilteredList] = useState<Array<ItemCardTypes["item"]>>([]);
+  const [mlist, setMasterList] = useState<Array<ItemCardTypes["item"]>>([]);
 
   const db = getDatabase(app)
   const reference_d = dRef(db, 'food_listings/');
 
   const stor = getStorage(app, "gs://mas-food-for-s.appspot.com")
 
-  useEffect(async () => {
+  async function getListings() {
     const snapshot = await get(reference_d)
     var item_arr : Array<ItemCardTypes["item"]> = []
     snapshot.forEach(function(child) {
@@ -61,13 +58,23 @@ const SearchScreen = ({ navigation }: any) => {
       const ref_string = "id_" + item.id + "_image"
       const reference_s = sRef(stor, ref_string)
 
-      item_arr[index].image = await getDownloadURL(reference_s) 
+      item_arr[index].image = await getDownloadURL(reference_s)
+
+      const ref_string_un = "users_real/" + item.seller_id + "/name/"
+      const reference_un = dRef(db, ref_string_un)
+      const snapshot = await get(reference_un)
+
+      item_arr[index].seller = snapshot.val()
     })
 
     item_arr.sort((a, b) => a.distance > b.distance ? 1 : -1)
 
     setFilteredList(item_arr)
     setMasterList(item_arr)
+  }
+
+  useEffect(() => {
+    getListings()
   }, [])
 
   return (
@@ -104,7 +111,6 @@ const SearchScreen = ({ navigation }: any) => {
             </TouchableOpacity>
           )}
         />
-        <FAB title="+" placement="right" onPress={() => navigation.push("CreateListing")}/>
       </View>
     </>
   );

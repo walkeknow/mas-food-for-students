@@ -65,7 +65,7 @@ const Tabs = () => {
       })}
     >
       <Tab.Screen options={{}} name="Search" component={SearchScreen} />
-      <Tab.Screen name="Give" component={SearchScreen} />
+      <Tab.Screen name="Give" component={CreateListingScreen} />
       <Tab.Screen name="Profile" component={ProfileStackScreens} />
     </Tab.Navigator>
   );
