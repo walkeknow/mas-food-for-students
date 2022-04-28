@@ -5,6 +5,17 @@ import { getDatabase, ref as dRef, get, onValue, DataSnapshot } from 'firebase/d
 import { getStorage, ref as sRef, getDownloadURL } from 'firebase/storage';
 import { RequestCardTypes } from "../../utils/types";
 
+/*
+* So the code is very similar to the SearchScreen code
+* The only difference is it is not an ItemCardType but a RequestCardType
+* A RequestCardType holds all the same information as an ItemCardType but
+* also a "state" value to determine if it is pending, has been accepted, or
+* has been rejected
+*
+* I haven't exactly decided how the database is gonna handle the accepts and rejects
+* I'm sure you will be able to figure it out :)
+*/
+
 const ViewRequestsScreen = () => {
   const [list, setList] = useState<Array<RequestCardTypes>>([]);
 
@@ -13,27 +24,25 @@ const ViewRequestsScreen = () => {
 
   const stor = getStorage(app, "gs://mas-food-for-s.appspot.com")
 
-  async function getListings() {
+  async function getRequests() {
     const snapshot = await get(reference_d)
-    var item_arr : Array<RequestCardTypes> = []
+    var req_arr : Array<RequestCardTypes> = []
     snapshot.forEach(function(child) {
-      item_arr.push(child.val())
+      req_arr.push(child.val())
     })
 
-    item_arr.forEach(async function(item, index) {
-      const ref_string = "id_" + item.id + "_image"
+    req_arr.forEach(async function(req, index) {
+      const ref_string = "id_" + req.item.id + "_image"
       const reference_s = sRef(stor, ref_string)
 
-      item_arr[index].image = await getDownloadURL(reference_s) 
+      req_arr[index].item.image = await getDownloadURL(reference_s) 
     })
 
-    item_arr.sort((a, b) => a.distance > b.distance ? 1 : -1)
-
-    setList(item_arr)
+    setList(req_arr)
   }
 
   useEffect(() => {
-    getListings()
+    getRequests()
   }, [])
 
   return (
