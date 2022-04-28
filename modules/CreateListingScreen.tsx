@@ -1,139 +1,207 @@
-import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+import DateTimePicker, {
+  DateTimePickerEvent,
+} from "@react-native-community/datetimepicker";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import {
-  Alert,
-  TextInput,
-  View,
-  Platform,
-  Button,
-  Text
-} from "react-native";
+import { Alert, TextInput, View, Platform, Button, Text } from "react-native";
 import styles from "./styles/CreateListingScreenStyles";
-import { FAB } from 'react-native-elements';
+import { FAB } from "react-native-elements";
+import { getDatabase, ref, onValue, set, get, child } from "firebase/database";
+import app from "../lib/db";
 
 const CreateListingScreen = ({ navigation, route }: any) => {
-  const [name, setName] = useState('');
-  const [university, setUniversity] = useState('');
-  const [address, setAddress] = useState('');
-  const [pickup, setPickup] = useState('');
+  const [name, setName] = useState("");
+  const [university, setUniversity] = useState("");
+  const [address, setAddress] = useState("");
+  const [pickup, setPickup] = useState("");
 
   const [bought, setBought] = useState(new Date());
   const [showBought, setShowBought] = useState(false);
-  const [textBought, setTextBought] = useState('enter purchase date');
-  const [formatBought, setFormatBought] = useState('invalid');
-  const onBoughtChange = ( event: DateTimePickerEvent, date: Date | undefined ) => {
+  const [textBought, setTextBought] = useState("enter purchase date");
+  const [formatBought, setFormatBought] = useState("invalid");
+  const onBoughtChange = (
+    event: DateTimePickerEvent,
+    date: Date | undefined
+  ) => {
     const currentDate = date || bought;
-    setShowBought(Platform.OS === 'ios');
+    setShowBought(Platform.OS === "ios");
     setBought(currentDate);
 
     let tempDate = new Date(currentDate);
-    let fDate = (tempDate.getMonth() + 1) + '/' + tempDate.getDate() + '/' + tempDate.getFullYear();
+    let fDate =
+      tempDate.getMonth() +
+      1 +
+      "/" +
+      tempDate.getDate() +
+      "/" +
+      tempDate.getFullYear();
     setFormatBought(fDate);
-    setTextBought('Bought:\n' + fDate);
-  }
+    setTextBought("Bought:\n" + fDate);
+  };
 
   const [expire, setExpire] = useState(new Date());
   const [showExpire, setShowExpire] = useState(false);
-  const [textExpire, setTextExpire] = useState('enter expiry\ndate');
-  const [formatExpire, setFormatExpire] = useState('invalid');
-  const onExpireChange = ( event: DateTimePickerEvent, date: Date | undefined ) => {
+  const [textExpire, setTextExpire] = useState("enter expiry\ndate");
+  const [formatExpire, setFormatExpire] = useState("invalid");
+  const onExpireChange = (
+    event: DateTimePickerEvent,
+    date: Date | undefined
+  ) => {
     const currentDate = date || expire;
-    setShowExpire(Platform.OS === 'ios');
+    setShowExpire(Platform.OS === "ios");
     setExpire(currentDate);
 
     let tempDate = new Date(currentDate);
-    let fDate = (tempDate.getMonth() + 1) + '/' + tempDate.getDate() + '/' + tempDate.getFullYear();
+    let fDate =
+      tempDate.getMonth() +
+      1 +
+      "/" +
+      tempDate.getDate() +
+      "/" +
+      tempDate.getFullYear();
     setFormatExpire(fDate);
-    setTextExpire('Expires:\n' + fDate);
-  }
+    setTextExpire("Expires:\n" + fDate);
+  };
+
+  const db = getDatabase(app);
 
   return (
     <>
       <StatusBar />
       <View style={styles.body}>
-        <Text style={{textAlign: "center", fontWeight: "bold", fontSize: 30}}>Create a Listing</Text>
+        <Text style={{ textAlign: "center", fontWeight: "bold", fontSize: 30 }}>
+          Create a Listing
+        </Text>
         <TextInput
           style={styles.textinput}
           placeholder="Product Name"
-          onChangeText={newName => setName(newName)}
+          onChangeText={(newName) => setName(newName)}
           value={name}
         />
         <TextInput
           style={styles.textinput}
           placeholder="University"
-          onChangeText={newUniversity => setUniversity(newUniversity)}
+          onChangeText={(newUniversity) => setUniversity(newUniversity)}
           value={university}
         />
         <View style={styles.sidebyside}>
           <View style={styles.defaultbutton}>
-            <Button title={textBought} onPress={() => setShowBought(true)}></Button>
-          </View>
-          <View style={styles.defaultbutton}>
-            <Button title={textExpire} onPress={() => setShowExpire(true)}></Button>
+            <Button
+              title={textBought}
+              onPress={() => setShowBought(true)}
+            ></Button>
           </View>
           {showBought && (
-            <DateTimePicker 
+            <DateTimePicker
+              style={{width: 200, height: 150 }}
               value={bought}
               mode="date"
-              display="calendar"
+              display="default"
               onChange={onBoughtChange}
               maximumDate={new Date()}
             />
           )}
+        </View>
+        <View style={styles.sidebyside}>
+          <View style={styles.defaultbutton}>
+            <Button
+              title={textExpire}
+              onPress={() => setShowExpire(true)}
+            ></Button>
+          </View>
           {showExpire && (
-            <DateTimePicker 
+            <DateTimePicker
+              style={{ width: 200, height: 150 }}
               value={expire}
               mode="date"
-              display="calendar"
+              display="default"
               onChange={onExpireChange}
               minimumDate={new Date(bought)}
             />
-          )} 
+          )}
         </View>
         <TextInput
           style={styles.textinput}
           placeholder="Pickup Location"
-          onChangeText={newLocation => setAddress(newLocation)}
+          onChangeText={(newLocation) => setAddress(newLocation)}
           value={address}
         />
         <TextInput
           style={styles.multilinetextinput}
           multiline={true}
           placeholder="Enter a small description of possible pickup instructions, times, etc."
-          onChangeText={newPickup => setPickup(newPickup)}
+          onChangeText={(newPickup) => setPickup(newPickup)}
           value={pickup}
         />
-        <FAB title="Confirm" placement="right" onPress={() => {
-          let error_message = '';
-          if (name === '') error_message += "Please enter a product name.\n";
-          if (university === '') error_message += "Please enter a university.\n";
-          if (formatBought === 'invalid') error_message += "Please enter the date the product was purchased.\n";
-          if (formatExpire === 'invalid') error_message += "Please enter an expiration date.\n";
-          if (address === '') error_message += "Please enter a pickup location.\n";
-          if (pickup === '') error_message += "Please enter a pickup description.\n";
-          if (error_message != '') {
-            return Alert.alert(
-              "Failed to post listing.",
-              error_message,
-              [
+        <FAB
+          title="Confirm"
+          placement="right"
+          onPress={() => {
+            let error_message = "";
+            if (name === "") error_message += "Please enter a product name.\n";
+            if (university === "")
+              error_message += "Please enter a university.\n";
+            if (formatBought === "invalid")
+              error_message +=
+                "Please enter the date the product was purchased.\n";
+            if (formatExpire === "invalid")
+              error_message += "Please enter an expiration date.\n";
+            if (address === "")
+              error_message += "Please enter a pickup location.\n";
+            if (pickup === "")
+              error_message += "Please enter a pickup description.\n";
+            if (error_message != "") {
+              return Alert.alert("Failed to post listing.", error_message, [
                 { text: "OK" },
-              ]
-            )
-          } else {
-            return Alert.alert(
-              "Successfully posted listing!",
-              "You can return home now.",
-              [
-                {
-                  text: "Return Home",
-                  onPress: () => navigation.navigate("Root"),
-                  style: "cancel",
+              ]);
+            } else {
+              const id_ref = ref(db, "/global_id");
+              get(id_ref).then((snapshot) => {
+                if (snapshot.exists()) {
+                  let id: number = snapshot.val();
+                  set(id_ref, id + 1);
+                  const listing_ref = ref(db, "food_listings/id_" + id);
+                  set(listing_ref, {
+                    address: address,
+                    bought: formatBought,
+                    // TODO: get distance somehow
+                    distance: "? mi",
+                    expires: formatExpire,
+                    id: id,
+                    name: name,
+                    pickup: "\n" + pickup,
+                    // TODO: get the current user's name
+                    seller: "?",
+                    tagColor: "#FFFFFF",
+                    university: university,
+                  });
+                } else {
+                  return Alert.alert(
+                    "Failed to retrive item id!",
+                    "You can try again.",
+                    [
+                      {
+                        text: "Try again",
+                      },
+                    ]
+                  );
                 }
-              ]
-            )
-          }
-        }}/>
+              });
+
+              return Alert.alert(
+                "Successfully posted listing!",
+                "You can return home now.",
+                [
+                  {
+                    text: "Return Home",
+                    onPress: () => navigation.navigate("Root"),
+                    style: "cancel",
+                  },
+                ]
+              );
+            }
+          }}
+        />
       </View>
     </>
   );

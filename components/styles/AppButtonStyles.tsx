@@ -12,6 +12,7 @@ const styles = ScaledSheet.create({
     },
     shadowRadius: 4,
     shadowOpacity: 1,
+    elevation: 3,
   },
   buttonText: {
     fontSize: 18,
