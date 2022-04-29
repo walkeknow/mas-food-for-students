@@ -10,13 +10,28 @@ import { getDatabase, ref, onValue, set, get, child } from "firebase/database";
 import { getAuth, createUserWithEmailAndPassword, deleteUser } from "firebase/auth"
 import app from "../lib/db";
 
+/***
+ * This is a bit harder to understand
+ * Many text fields, if any are empty, will refure to sign up,
+ * the actaul sign up is dealt with by Firebase, which has its own
+ * that it can throw
+ * Based on the email, pulls info from the database and fills in
+ * the rest of the information
+ * Then creates a user profile in Firebase using the UID
+ * 
+ * All that's left for you to figure out are cookies 
+ */
+
 const SignUpScreen = ({ navigation, route }: any) => {
+  // User input -----------------------------------------------
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [re_password, setRePassword] = useState("");
   const [first_name, setFirstName] = useState("");
   const [last_name, setLastName] = useState("");
   const [street, setStreet] = useState("");
+
+  // Read from Firebase after user input -----------------------
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [zip, setZip] = useState("");

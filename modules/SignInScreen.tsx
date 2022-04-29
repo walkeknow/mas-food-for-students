@@ -10,6 +10,15 @@ import { getDatabase, ref, onValue, set, get, child } from "firebase/database";
 import { getAuth, signInWithEmailAndPassword, deleteUser } from "firebase/auth"
 import app from "../lib/db";
 
+/***
+ * This is relatively easy enough to understand
+ * Two text fields, if either are empty, will refure to sign in,
+ * the actaul sign in is dealt with by Firebase
+ * Also there a bit about signing up too
+ * 
+ * All that's left for you to figure out are cookies 
+ */
+
 const SignInScreen = ({ navigation, route }: any) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
