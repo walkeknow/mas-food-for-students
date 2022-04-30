@@ -308,8 +308,25 @@ const CreateListingScreen = ({ navigation, route }: any) => {
                 [
                   {
                     text: "Return Home",
-                    onPress: () =>
-                      navigation.navigate("Tabs", { screen: "Search" }),
+                    onPress: () => {
+                      setName("")
+                      setUniversity(storeUniversity)
+                      setAddress(storeAddress)
+                      setPickup("")
+                      setImage(Images.productPlaceholder)
+                    
+                      setBought(new Date())
+                      setShowBought(false)
+                      setTextBought("enter purchase date")
+                      setFormatBought("invalid")
+
+                      setExpire(new Date())
+                      setShowExpire(false)
+                      setTextExpire("enter expiry\ndate")
+                      setFormatExpire("invalid")
+
+                      navigation.navigate("Tabs", { screen: "Search" })
+                    },
                     style: "cancel",
                   },
                 ]
