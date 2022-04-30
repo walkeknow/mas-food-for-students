@@ -7,7 +7,6 @@ import {
 const styles = StyleSheet.create({
   body: {
     backgroundColor: Colors.lightBrown,
-    flex: 1,
     alignItems: "stretch",
     paddingHorizontal: 25,
     paddingVertical: 60,
@@ -42,9 +41,16 @@ const styles = StyleSheet.create({
     height: 100,
     borderColor: Colors.primaryBlue,
     borderWidth: 7,
+    borderRadius: 100,
+    marginTop: 20
   },
   center: {
     alignItems: "center"
+  },
+  button: {
+    marginTop: 30,
+    width: 309,
+    alignSelf: "center",
   },
 });
 
