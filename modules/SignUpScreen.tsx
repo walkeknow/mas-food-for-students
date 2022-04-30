@@ -47,13 +47,6 @@ const SignUpScreen = ({ navigation, route }: any) => {
   const [last_name, setLastName] = useState("");
   const [street, setStreet] = useState("");
 
-  // Read from Firebase after user input -----------------------
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [zip, setZip] = useState("");
-  const [university, setUniversity] = useState("");
-  const [tag_color, setTagColor] = useState("");
-
   const db = getDatabase(app);
   const auth = getAuth(app);
 
@@ -99,23 +92,17 @@ const SignUpScreen = ({ navigation, route }: any) => {
           if (data == null) {
             deleteUser(userCredential.user).then(() => console.log("deleted"));
           } else {
-            setCity(data.city);
-            setUniversity(data.name);
-            setState(data.state);
-            setTagColor(data.tag_color);
-            setZip(data.zip);
-
             const uid = userCredential.user.uid;
             const reference_u = ref(db, "users_real/" + uid);
             set(reference_u, {
               name: first_name + " " + last_name,
               email: email,
               addr_street: street,
-              addr_city: city,
-              addr_state: state,
-              addr_zip: zip,
-              uni: university,
-              uni_color: tag_color,
+              addr_city: data.city,
+              addr_state: data.state,
+              addr_zip: data.zip,
+              uni: data.name,
+              uni_color: data.tag_color,
             });
 
             navigation.push("SignIn");
