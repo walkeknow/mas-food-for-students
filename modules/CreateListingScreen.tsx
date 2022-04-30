@@ -29,6 +29,10 @@ const CreateListingScreen = ({ navigation, route }: any) => {
     (store) => store.profile
   );
 
+  const { uid } = useAppSelector(
+    (store) => store.uid
+  );
+
   const getImageFromCamera = async (setImage: any) => {
     // No permissions request is necessary for launching the image library
 
@@ -260,33 +264,42 @@ const CreateListingScreen = ({ navigation, route }: any) => {
             } else {
               const id_ref = ref(db, "/global_id");
               let blob = await fetch(image).then((r) => r.blob());
+
               get(id_ref).then((snapshot) => {
                 if (snapshot.exists()) {
                   let id: number = snapshot.val();
                   set(id_ref, id + 1);
+
                   const listing_ref = ref(db, "food_listings/id_" + id);
                   const storage_ref = s_ref(
                     getStorage(),
                     "id_" + id + "_image"
                   );
+                  const user_ref = ref(db, "users_real/" + uid)
+
                   uploadBytes(storage_ref, blob).then((snapshot) => {
                     console.log("tried to upload: " + image);
                   });
-                  set(listing_ref, {
-                    address: address,
-                    bought: formatBought,
-                    // TODO: get distance somehow
-                    distance: "? mi",
-                    expires: formatExpire,
-                    image: "",
-                    id: id,
-                    name: name,
-                    pickup: "\n" + pickup,
-                    // TODO: get the current user's name
-                    seller_id: "?",
-                    tagColor: "#FFFFFF",
-                    university: university,
-                  });
+                  
+                  get(user_ref).then((snapshot) => {
+                    const data = snapshot.val()
+
+                    set(listing_ref, {
+                      address: data.addr_street + ", " + data.addr_city + ", " + data.addr_state + ", " + data.addr_zip,
+                      bought: formatBought,
+                      // TODO: get distance somehow
+                      distance: "? mi",
+                      expires: formatExpire,
+                      image: "",
+                      id: id,
+                      name: data.name,
+                      pickup: "\n" + pickup,
+                      // TODO: get the current user's name
+                      seller_id: uid,
+                      tagColor: data.uni_color,
+                      university: data.uni,
+                    });
+                  })
                 } else {
                   return Alert.alert(
                     "Failed to retrive item id!",
