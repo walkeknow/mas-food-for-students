@@ -6,7 +6,7 @@ import {
   Image,
   ImageSourcePropType,
   Text,
-  View
+  View,
 } from "react-native";
 import styles from "./styles/ListingScreenStyles";
 import { ItemCardTypes } from "../utils/types";
@@ -14,7 +14,7 @@ import { ItemCardTypes } from "../utils/types";
 const ListingCard = ({ item }: ItemCardTypes) => {
   return (
     <View style={styles.card}>
-      <Image style={styles.cardImage} source={{uri: item.image}} />
+      <Image style={styles.cardImage} source={{ uri: item.image }} />
       <View style={styles.cardDescription}>
         <View style={styles.cardTopName}>
           <Text style={styles.itemTopName}>{item.name}</Text>
@@ -49,7 +49,7 @@ const ListingCard = ({ item }: ItemCardTypes) => {
 };
 
 const ListingScreen = ({ navigation, route }: any) => {
-  const item = route.params.item
+  const item = route.params.item;
 
   return (
     <>
@@ -62,13 +62,13 @@ const ListingScreen = ({ navigation, route }: any) => {
         onPress={() =>
           Alert.alert(
             "Request success!",
-            "You will be notified when " +
-              item.seller +
-              " approves!",
+            "You will be notified when " + item.seller + " approves!",
             [
               {
                 text: "Return Home",
-                onPress: () => navigation.navigate("Root"),
+                onPress: () => {
+                  navigation.navigate("Tabs", { screen: "Search" });
+                },
                 style: "cancel",
               },
               { text: "OK" },

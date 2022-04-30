@@ -204,7 +204,7 @@ const CreateListingScreen = ({ navigation, route }: any) => {
                 [
                   {
                     text: "Return Home",
-                    onPress: () => navigation.navigate("Root"),
+                    onPress: () => navigation.navigate("Tabs", {screen: "Search"}),
                     style: "cancel",
                   },
                 ]

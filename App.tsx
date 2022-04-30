@@ -126,11 +126,6 @@ export default function App() {
             />
             <RootStack.Screen
               options={{ headerTransparent: true, headerTitle: "" }}
-              name="Search"
-              component={SearchScreen}
-            />
-            <RootStack.Screen
-              options={{ headerTransparent: true, headerTitle: "" }}
               name="Listing"
               component={ListingScreen}
             />
