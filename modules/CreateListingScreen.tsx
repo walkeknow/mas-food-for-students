@@ -20,7 +20,7 @@ const CreateListingScreen = ({ navigation, route }: any) => {
 
   const getImageFromCamera = async (setImage: any) => {
     // No permissions request is necessary for launching the image library
-  
+    ImagePicker.requestCameraPermissionsAsync()
     let permissionResult = await ImagePicker.getCameraPermissionsAsync();
   
     if (permissionResult.status === "granted") {
@@ -43,6 +43,7 @@ const CreateListingScreen = ({ navigation, route }: any) => {
     console.log("library");
   
     // No permissions request is necessary for launching the image library
+    ImagePicker.requestMediaLibraryPermissionsAsync()
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
