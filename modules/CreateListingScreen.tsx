@@ -184,12 +184,6 @@ const CreateListingScreen = ({ navigation, route }: any) => {
           onChangeText={(newName) => setName(newName)}
           value={name}
         />
-        <TextInput
-          style={styles.textinput}
-          placeholder="University"
-          onChangeText={(newUniversity) => setUniversity(newUniversity)}
-          value={university}
-        />
         <View style={styles.sidebyside}>
           <View style={styles.defaultbutton}>
             <Button
@@ -227,12 +221,6 @@ const CreateListingScreen = ({ navigation, route }: any) => {
           )}
         </View>
         <TextInput
-          style={styles.textinput}
-          placeholder="Pickup Location"
-          onChangeText={(newLocation) => setAddress(newLocation)}
-          value={address}
-        />
-        <TextInput
           style={styles.multilinetextinput}
           multiline={true}
           placeholder="Enter a small description of possible pickup instructions, times, etc."
@@ -246,15 +234,11 @@ const CreateListingScreen = ({ navigation, route }: any) => {
             if (name === "") error_message += "Please enter a product name.\n";
             if (image === Images.productPlaceholder)
               error_message += "Please choose a product image.\n";
-            if (university === "")
-              error_message += "Please enter a university.\n";
             if (formatBought === "invalid")
               error_message +=
                 "Please enter the date the product was purchased.\n";
             if (formatExpire === "invalid")
               error_message += "Please enter an expiration date.\n";
-            if (address === "")
-              error_message += "Please enter a pickup location.\n";
             if (pickup === "")
               error_message += "Please enter a pickup description.\n";
             if (error_message != "") {
@@ -292,7 +276,7 @@ const CreateListingScreen = ({ navigation, route }: any) => {
                       expires: formatExpire,
                       image: "",
                       id: id,
-                      name: data.name,
+                      name: name,
                       pickup: "\n" + pickup,
                       // TODO: get the current user's name
                       seller_id: uid,
