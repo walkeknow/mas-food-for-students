@@ -1,6 +1,6 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
-import { get, getDatabase, ref as dRef } from "firebase/database";
+import { get, getDatabase, ref as dRef, set } from "firebase/database";
 import { getDownloadURL, getStorage, ref as sRef } from "firebase/storage";
 import React, { useEffect, useState } from "react";
 import {
@@ -48,9 +48,12 @@ const SearchScreen = ({ navigation }: any) => {
   const db = getDatabase(app);
   const reference_d = dRef(db, "food_listings/");
 
-  const stor = getStorage(app, "gs://mas-food-for-s.appspot.com");
+  const stor = getStorage(app, "gs://mas-food-for-2.appspot.com");
 
   async function getListings() {
+    setMasterList([]);
+    setFilteredList([]);
+
     const snapshot = await get(reference_d);
     var item_arr: Array<ItemCardTypes["item"]> = [];
 
@@ -60,14 +63,28 @@ const SearchScreen = ({ navigation }: any) => {
       });
 
       item_arr.forEach(async function (item, index) {
-        const ref_string = "id_" + item.id + "_image";
-        const reference_s = sRef(stor, ref_string);
+        if (item_arr[index].image === "") {
+          const ref_string = "id_" + item.id + "_image";
+          const reference_s = sRef(stor, ref_string);
 
-        try {
-          item_arr[index].image = await getDownloadURL(reference_s);
-        } catch (e) {
-          const reference_ni = sRef(stor, "no_image")
-          item_arr[index].image = await getDownloadURL(reference_ni);
+          const url = await getDownloadURL(reference_s);
+          item_arr[index].image = url
+
+          const ref_string_item = "food_listings/id_" + item.id;
+          const reference_i = dRef(db, ref_string_item);
+          set(reference_i, {
+            address: item_arr[index].address,
+            bought: item_arr[index].bought,
+            distance: item_arr[index].distance,
+            expires: item_arr[index].expires,
+            image: url,
+            id: item_arr[index].id,
+            name: item_arr[index].name,
+            pickup: item_arr[index].pickup,
+            seller_id: item_arr[index].seller_id,
+            tagColor: item_arr[index].tagColor,
+            university: item_arr[index].university,
+          });
         }
 
         const ref_string_un = "users_real/" + item.seller_id + "/name/";
@@ -81,17 +98,14 @@ const SearchScreen = ({ navigation }: any) => {
             const tempList = [...list];
             tempList.push(item_arr[index]);
             tempList.sort((a, b) => (a.distance > b.distance ? 1 : -1));
-            console.log(tempList);
             return tempList;
           });
           setMasterList((list) => {
             const tempList = [...list];
             tempList.push(item_arr[index]);
             tempList.sort((a, b) => (a.distance > b.distance ? 1 : -1));
-            console.log(tempList);
             return tempList;
           });
-        } else {
         }
       });
     } else {
@@ -100,8 +114,6 @@ const SearchScreen = ({ navigation }: any) => {
 
   useEffect(() => {
     if (updateListings) {
-      setMasterList([]);
-      setFilteredList([]);
       console.log("LISTING VAL", updateListings);
       getListings();
       dispatch(updateListingsAction(false));

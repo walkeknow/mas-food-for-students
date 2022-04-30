@@ -1,11 +1,11 @@
 import { initializeApp, getApp, getApps } from 'firebase/app';
 
 const firebaseConfig = {
-    apiKey: 'AIzaSyAxpJhPDq3hepF_FMMbh__qtVb-oRMSHmk',
-    authDomain: 'mas-food-for-s.firebaseapp.com',
-    databaseURL: 'https://mas-food-for-s-default-rtdb.firebaseio.com/',
-    projectId: 'mas-food-for-s',
-    storageBucket: 'mas-food-for-s.appspot.com'
+    apiKey: 'AIzaSyCsER_FMu1E1LK4_zmiuCc3lpsZEpiay38',
+    authDomain: 'mas-food-for-2.firebaseapp.com',
+    databaseURL: 'https://mas-food-for-2-default-rtdb.firebaseio.com/',
+    projectId: 'mas-food-for-2',
+    storageBucket: 'mas-food-for-2.appspot.com'
 }
 
 var temp

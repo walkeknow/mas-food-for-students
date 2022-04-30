@@ -278,6 +278,7 @@ const CreateListingScreen = ({ navigation, route }: any) => {
                     // TODO: get distance somehow
                     distance: "? mi",
                     expires: formatExpire,
+                    image: "",
                     id: id,
                     name: name,
                     pickup: "\n" + pickup,
