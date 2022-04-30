@@ -1,7 +1,7 @@
-import { StyleSheet } from "react-native";
+import { ScaledSheet } from "react-native-size-matters";
 import Colors from "../../theme/Colors";
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   body: {
     backgroundColor: Colors.lightBrown,
     flex: 1,
@@ -9,6 +9,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     paddingVertical: 60,
     paddingTop: 120,
+  },
+  name: {
+    marginTop: 45,
+    marginStart: 10,
+  },
+  password: {
+    marginTop: 8,
+    marginStart: 10,
+  },
+  label: {
+    marginTop: 20,
+    marginStart: 10,
+  },
+  button: {
+    marginTop: 40,
+    width: 309,
+    alignSelf: "center",
   },
   sidebyside: {
     backgroundColor: Colors.lightBrown,
@@ -18,13 +35,19 @@ const styles = StyleSheet.create({
   defaultbutton: {
     flex: 1,
     padding: 10,
-    margin: 10
+    margin: 10,
+  },
+  hintText: {
+    marginStart: 20,
+    textDecorationLine: "underline",
+    color: Colors.black,
+    marginTop: 20,
   },
   textinput: {
     backgroundColor: Colors.white,
     padding: 10,
     borderRadius: 10,
-    margin: 10
+    margin: 10,
   },
   rowview: {
     flexDirection: "row",
@@ -34,7 +57,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     borderRadius: 10,
     margin: 10,
-    flex: 2
+    flex: 2,
   },
 });
 

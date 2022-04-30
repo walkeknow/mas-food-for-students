@@ -3,12 +3,26 @@ import DateTimePicker, {
 } from "@react-native-community/datetimepicker";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { Alert, TextInput, View, Platform, Button, Text, FlatList } from "react-native";
-import { Picker } from "@react-native-picker/picker"
+import {
+  Alert,
+  TextInput,
+  View,
+  Platform,
+  Button,
+  Text,
+  FlatList,
+} from "react-native";
+import { Picker } from "@react-native-picker/picker";
 import styles from "./styles/SignUpScreenStyles";
 import { getDatabase, ref, onValue, set, get, child } from "firebase/database";
-import { getAuth, createUserWithEmailAndPassword, deleteUser } from "firebase/auth"
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  deleteUser,
+} from "firebase/auth";
 import app from "../lib/db";
+import Label from "./profile/components/Label";
+import AppButton from "../components/AppButton";
 
 /***
  * This is a bit harder to understand
@@ -18,8 +32,8 @@ import app from "../lib/db";
  * Based on the email, pulls info from the database and fills in
  * the rest of the information
  * Then creates a user profile in Firebase using the UID
- * 
- * All that's left for you to figure out are cookies 
+ *
+ * All that's left for you to figure out are cookies
  */
 
 const SignUpScreen = ({ navigation, route }: any) => {
@@ -39,67 +53,78 @@ const SignUpScreen = ({ navigation, route }: any) => {
   const [tag_color, setTagColor] = useState("");
 
   const db = getDatabase(app);
-  const auth = getAuth(app)
+  const auth = getAuth(app);
 
   function handlePress() {
-    const any_empty = email === "" || password === "" || re_password === "" ||
-                      first_name === "" || last_name === "" || street === ""
+    const any_empty =
+      email === "" ||
+      password === "" ||
+      re_password === "" ||
+      first_name === "" ||
+      last_name === "" ||
+      street === "";
     if (any_empty) {
-      return Alert.alert("Failed to Create Account", "Please make sure to fill in all fields", [
-        { text: "OK" },
-      ]);
+      return Alert.alert(
+        "Failed to Create Account",
+        "Please make sure to fill in all fields",
+        [{ text: "OK" }]
+      );
     }
     if (password != re_password) {
-      return Alert.alert("Failed to Create Account", "Passwords do not match, try again", [
-        { text: "OK" },
-      ]);
+      return Alert.alert(
+        "Failed to Create Account",
+        "Passwords do not match, try again",
+        [{ text: "OK" }]
+      );
     }
     if (email.substring(email.length - 4) != ".edu") {
-      return Alert.alert("Failed to Create Account", "Please use an .edu email", [
-        { text: "OK" },
-      ]);
+      return Alert.alert(
+        "Failed to Create Account",
+        "Please use an .edu email",
+        [{ text: "OK" }]
+      );
     }
 
     createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      const startInd = email.indexOf("@") + 1
-      const endInd = email.lastIndexOf(".")
-      const domain = email.substring(startInd, endInd)
+      .then((userCredential) => {
+        const startInd = email.indexOf("@") + 1;
+        const endInd = email.lastIndexOf(".");
+        const domain = email.substring(startInd, endInd);
 
-      const reference = ref(db, "school_domains/" + domain)
-      get(reference).then((snapshot) => {
-        const data = snapshot.val()
-        if (data == null) {
-          deleteUser(userCredential.user).then(() => console.log("deleted"))
-        } else {
-          setCity(data.city)
-          setUniversity(data.name)
-          setState(data.state)
-          setTagColor(data.tag_color)
-          setZip(data.zip)
+        const reference = ref(db, "school_domains/" + domain);
+        get(reference).then((snapshot) => {
+          const data = snapshot.val();
+          if (data == null) {
+            deleteUser(userCredential.user).then(() => console.log("deleted"));
+          } else {
+            setCity(data.city);
+            setUniversity(data.name);
+            setState(data.state);
+            setTagColor(data.tag_color);
+            setZip(data.zip);
 
-          const uid = userCredential.user.uid
-          const reference_u = ref(db, "users_real/" + uid)
-          set(reference_u, {
-            name: first_name + " " + last_name,
-            email: email,
-            addr_street: street,
-            addr_city: city,
-            addr_state: state,
-            addr_zip: zip,
-            uni: university,
-            uni_color: tag_color
-          })
+            const uid = userCredential.user.uid;
+            const reference_u = ref(db, "users_real/" + uid);
+            set(reference_u, {
+              name: first_name + " " + last_name,
+              email: email,
+              addr_street: street,
+              addr_city: city,
+              addr_state: state,
+              addr_zip: zip,
+              uni: university,
+              uni_color: tag_color,
+            });
 
-          navigation.push("SignIn")
-        }
+            navigation.push("SignIn");
+          }
+        });
       })
-    })
-    .catch((error) => {
-      return Alert.alert("Failed to Create Account", error.code, [
-        { text: "OK" },
-      ]);
-    });
+      .catch((error) => {
+        return Alert.alert("Failed to Create Account", error.code, [
+          { text: "OK" },
+        ]);
+      });
   }
 
   return (
@@ -109,12 +134,11 @@ const SignUpScreen = ({ navigation, route }: any) => {
         <Text style={{ textAlign: "center", fontWeight: "bold", fontSize: 30 }}>
           Sign Up
         </Text>
-        <Text style={{ textAlign: "center", fontSize: 17}}>
+        <Text style={{ textAlign: "center", fontSize: 17 }}>
           Create an account!
         </Text>
-        <Text style={{ textAlign: "left", fontSize: 17}}>
-          Login Information
-        </Text>
+
+        <Label style={styles.name}>Login Information</Label>
         <TextInput
           style={styles.textinput}
           placeholder="Email*"
@@ -133,9 +157,7 @@ const SignUpScreen = ({ navigation, route }: any) => {
           onChangeText={(newRePassword) => setRePassword(newRePassword)}
           value={re_password}
         />
-        <Text style={{ textAlign: "left", fontSize: 17}}>
-          Personal Information
-        </Text>
+        <Label style={styles.label}>Personal Information</Label>
         <TextInput
           style={styles.textinput}
           placeholder="First Name*"
@@ -148,19 +170,17 @@ const SignUpScreen = ({ navigation, route }: any) => {
           onChangeText={(newLastName) => setLastName(newLastName)}
           value={last_name}
         />
-        <Text style={{ textAlign: "left", fontSize: 17}}>
-          Housing Information
-        </Text>
+        <Label style={styles.label}>Housing Information</Label>
+
         <TextInput
           style={styles.textinput}
           placeholder="Street*"
           onChangeText={(newStreet) => setStreet(newStreet)}
           value={street}
         />
-        <Button
-          title="Sign Up"
-          onPress={() => handlePress()}
-        />
+        <AppButton style={styles.button} onPress={() => handlePress()}>
+          Sign Up
+        </AppButton>
       </View>
     </>
   );

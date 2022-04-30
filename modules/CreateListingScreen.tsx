@@ -8,7 +8,8 @@ import styles from "./styles/CreateListingScreenStyles";
 import { FAB } from "react-native-elements";
 import { getDatabase, ref, onValue, set, get, child } from "firebase/database";
 import app from "../lib/db";
-import { useAppSelector } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { updateListingsAction } from "../redux/slices/profileReducer";
 
 const CreateListingScreen = ({ navigation, route }: any) => {
   const { address: storeAddress, university: storeUniversity } = useAppSelector(
@@ -69,6 +70,8 @@ const CreateListingScreen = ({ navigation, route }: any) => {
   };
 
   const db = getDatabase(app);
+
+  const dispatch = useAppDispatch();
 
   return (
     <>
@@ -192,6 +195,8 @@ const CreateListingScreen = ({ navigation, route }: any) => {
                   );
                 }
               });
+
+              dispatch(updateListingsAction(true));
 
               return Alert.alert(
                 "Successfully posted listing!",

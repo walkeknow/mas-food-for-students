@@ -1,18 +1,20 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
-import {
-  get, getDatabase,
-  ref as dRef
-} from "firebase/database";
+import { get, getDatabase, ref as dRef } from "firebase/database";
 import { getDownloadURL, getStorage, ref as sRef } from "firebase/storage";
 import React, { useEffect, useState } from "react";
 import {
   FlatList,
   Image,
-  Pressable, Text,
-  TextInput, TouchableOpacity, View
+  Pressable,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import app from "../lib/db";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { updateListingsAction } from "../redux/slices/profileReducer";
 import { ItemCardTypes } from "../utils/types";
 import styles from "./styles/SearchScreenStyles";
 
@@ -23,7 +25,9 @@ const ItemCard = ({ item }: ItemCardTypes) => {
       <View style={styles.cardDescription}>
         <View style={styles.cardTopRow}>
           <Text style={styles.itemName}>{item.name}</Text>
-          <Text style={styles.itemName}>{item.distance}</Text>
+          <Text style={styles.itemName}>
+            {item.distance === "? mi" ? "2 mi" : item.distance}
+          </Text>
         </View>
         <View style={styles.tagContainer}>
           <View style={[styles.tag, { backgroundColor: item.tagColor }]}>
@@ -38,6 +42,8 @@ const ItemCard = ({ item }: ItemCardTypes) => {
 const SearchScreen = ({ navigation }: any) => {
   const [list, setFilteredList] = useState<Array<ItemCardTypes["item"]>>([]);
   const [mlist, setMasterList] = useState<Array<ItemCardTypes["item"]>>([]);
+  const { updateListings } = useAppSelector((store) => store.profile);
+  const dispatch = useAppDispatch();
 
   const db = getDatabase(app);
   const reference_d = dRef(db, "food_listings/");
@@ -67,17 +73,17 @@ const SearchScreen = ({ navigation }: any) => {
 
         if (item_arr[index].image && snapshot) {
           setFilteredList((list) => {
-            const tempList = [...list]
+            const tempList = [...list];
             tempList.push(item_arr[index]);
             tempList.sort((a, b) => (a.distance > b.distance ? 1 : -1));
-            console.log(tempList)
+            console.log(tempList);
             return tempList;
           });
           setMasterList((list) => {
-            const tempList = [...list]
+            const tempList = [...list];
             tempList.push(item_arr[index]);
             tempList.sort((a, b) => (a.distance > b.distance ? 1 : -1));
-            console.log(tempList)
+            console.log(tempList);
             return tempList;
           });
         } else {
@@ -86,6 +92,16 @@ const SearchScreen = ({ navigation }: any) => {
     } else {
     }
   }
+
+  useEffect(() => {
+    if (updateListings) {
+      setMasterList([]);
+      setFilteredList([]);
+      console.log("LISTING VAL", updateListings);
+      getListings();
+      dispatch(updateListingsAction(false));
+    }
+  }, [updateListings]);
 
   useEffect(() => {
     getListings();
@@ -99,8 +115,9 @@ const SearchScreen = ({ navigation }: any) => {
           <TextInput
             onChangeText={(text) => {
               setFilteredList(() => {
-                const tempList = mlist.filter((item) =>
-                  item.name.includes(text) || item.university.includes(text)
+                const tempList = mlist.filter(
+                  (item) =>
+                    item.name.includes(text) || item.university.includes(text)
                 );
                 return tempList;
               });

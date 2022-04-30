@@ -6,6 +6,7 @@ const initialState = {
   image: Images.placeholderImage,
   address: "",
   university: Images.universityIcon,
+  updateListings: false,
 };
 
 export const profileSlice = createSlice({
@@ -18,6 +19,9 @@ export const profileSlice = createSlice({
       state.address = action.payload.address;
       state.university = action.payload.university;
     },
+    updateListingsAction: (state, action) => {
+      state.updateListings = action.payload;
+    },
     resetProfileData: (state) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       return (state = initialState);
@@ -25,6 +29,7 @@ export const profileSlice = createSlice({
   },
 });
 
-export const { editProfile, resetProfileData } = profileSlice.actions;
+export const { editProfile, resetProfileData, updateListingsAction } =
+  profileSlice.actions;
 
 export default profileSlice.reducer;
