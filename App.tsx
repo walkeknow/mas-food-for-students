@@ -13,6 +13,8 @@ import ViewProfileScreen from "./modules/profile/ViewProfileScreen";
 import ReceivedRequestsScreen from "./modules/requests/ReceivedRequestsScreen";
 import SentRequestsScreen from "./modules/requests/SentRequestsScreen";
 import SearchScreen from "./modules/SearchScreen";
+import SignInScreen from "./modules/SignInScreen";
+import SignUpScreen from "./modules/SignUpScreen";
 import store from "./redux/store";
 import Colors from "./theme/Colors";
 import { ProfileStackParamList, RootStackParamList } from "./utils/types";
@@ -107,10 +109,25 @@ export default function App() {
       <RootSiblingParent>
         <NavigationContainer>
           <RootStack.Navigator>
+          <RootStack.Screen
+              options={{ headerTransparent: true, headerTitle: "" }}
+              name="SignIn"
+              component={SignInScreen}
+            />
             <RootStack.Screen
               options={{ headerTransparent: true, headerTitle: "" }}
-              name="Root"
+              name="SignUp"
+              component={SignUpScreen}
+            />
+            <RootStack.Screen
+              options={{ headerTransparent: true, headerTitle: "" }}
+              name="Tabs"
               component={Tabs}
+            />
+            <RootStack.Screen
+              options={{ headerTransparent: true, headerTitle: "" }}
+              name="Search"
+              component={SearchScreen}
             />
             <RootStack.Screen
               options={{ headerTransparent: true, headerTitle: "" }}
