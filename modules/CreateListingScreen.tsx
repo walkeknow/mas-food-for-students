@@ -29,6 +29,10 @@ const CreateListingScreen = ({ navigation, route }: any) => {
     (store) => store.profile
   );
 
+  const { uid } = useAppSelector(
+    (store) => store.uid
+  );
+
   const getImageFromCamera = async (setImage: any) => {
     // No permissions request is necessary for launching the image library
 
@@ -180,12 +184,6 @@ const CreateListingScreen = ({ navigation, route }: any) => {
           onChangeText={(newName) => setName(newName)}
           value={name}
         />
-        <TextInput
-          style={styles.textinput}
-          placeholder="University"
-          onChangeText={(newUniversity) => setUniversity(newUniversity)}
-          value={university}
-        />
         <View style={styles.sidebyside}>
           <View style={styles.defaultbutton}>
             <Button
@@ -223,12 +221,6 @@ const CreateListingScreen = ({ navigation, route }: any) => {
           )}
         </View>
         <TextInput
-          style={styles.textinput}
-          placeholder="Pickup Location"
-          onChangeText={(newLocation) => setAddress(newLocation)}
-          value={address}
-        />
-        <TextInput
           style={styles.multilinetextinput}
           multiline={true}
           placeholder="Enter a small description of possible pickup instructions, times, etc."
@@ -242,15 +234,11 @@ const CreateListingScreen = ({ navigation, route }: any) => {
             if (name === "") error_message += "Please enter a product name.\n";
             if (image === Images.productPlaceholder)
               error_message += "Please choose a product image.\n";
-            if (university === "")
-              error_message += "Please enter a university.\n";
             if (formatBought === "invalid")
               error_message +=
                 "Please enter the date the product was purchased.\n";
             if (formatExpire === "invalid")
               error_message += "Please enter an expiration date.\n";
-            if (address === "")
-              error_message += "Please enter a pickup location.\n";
             if (pickup === "")
               error_message += "Please enter a pickup description.\n";
             if (error_message != "") {
@@ -260,33 +248,42 @@ const CreateListingScreen = ({ navigation, route }: any) => {
             } else {
               const id_ref = ref(db, "/global_id");
               let blob = await fetch(image).then((r) => r.blob());
+
               get(id_ref).then((snapshot) => {
                 if (snapshot.exists()) {
                   let id: number = snapshot.val();
                   set(id_ref, id + 1);
+
                   const listing_ref = ref(db, "food_listings/id_" + id);
                   const storage_ref = s_ref(
                     getStorage(),
                     "id_" + id + "_image"
                   );
+                  const user_ref = ref(db, "users_real/" + uid)
+
                   uploadBytes(storage_ref, blob).then((snapshot) => {
                     console.log("tried to upload: " + image);
                   });
-                  set(listing_ref, {
-                    address: address,
-                    bought: formatBought,
-                    // TODO: get distance somehow
-                    distance: "? mi",
-                    expires: formatExpire,
-                    image: "",
-                    id: id,
-                    name: name,
-                    pickup: "\n" + pickup,
-                    // TODO: get the current user's name
-                    seller_id: "?",
-                    tagColor: "#FFFFFF",
-                    university: university,
-                  });
+                  
+                  get(user_ref).then((snapshot) => {
+                    const data = snapshot.val()
+
+                    set(listing_ref, {
+                      address: data.addr_street + ", " + data.addr_city + ", " + data.addr_state + ", " + data.addr_zip,
+                      bought: formatBought,
+                      // TODO: get distance somehow
+                      distance: "? mi",
+                      expires: formatExpire,
+                      image: "",
+                      id: id,
+                      name: name,
+                      pickup: "\n" + pickup,
+                      // TODO: get the current user's name
+                      seller_id: uid,
+                      tagColor: data.uni_color,
+                      university: data.uni,
+                    });
+                  })
                 } else {
                   return Alert.alert(
                     "Failed to retrive item id!",

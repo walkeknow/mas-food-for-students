@@ -105,7 +105,7 @@ const SignUpScreen = ({ navigation, route }: any) => {
               uni_color: data.tag_color,
             });
 
-            navigation.push("SignIn");
+            navigation.replace("SignIn");
           }
         });
       })

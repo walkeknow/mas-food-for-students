@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, Image, Pressable, View } from "react-native";
 import Images from "../../assets";
 import AppButton from "../../components/AppButton";
@@ -9,6 +9,9 @@ import styles from "./styles/EditProfileScreenStyles";
 import * as ImagePicker from "expo-image-picker";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { editProfile } from "../../redux/slices/profileReducer";
+import { get, getDatabase, ref, set } from "firebase/database";
+import app from "../../lib/db";
+import { reloadProf } from "../../redux/slices/uidReducer";
 
 const getImageFromCamera = async (setImage: any) => {
   // No permissions request is necessary for launching the image library
@@ -75,6 +78,10 @@ const EditProfileScreen = () => {
     image: storeImage,
   } = useAppSelector((store) => store.profile);
 
+  const { uid } = useAppSelector(
+    (store) => store.uid
+  );
+
   const [name, setName] = useState(storeName);
   const [university, setUniversity] = useState(storeUniversity);
   const [address, setAddress] = useState(storeAddress);
@@ -82,6 +89,41 @@ const EditProfileScreen = () => {
   const navigation = useNavigation();
   const [image, setImage] = useState(storeImage);
   const dispatch = useAppDispatch();
+
+  const db = getDatabase(app)
+
+  async function updateProfile() {
+    const reference = ref(db, "users_real/" + uid)
+    const snapshot = await get(reference)
+    const data = snapshot.val()
+    
+    set(reference, {
+      addr_street: address,
+      addr_city: data.addr_city,
+      addr_state: data.addr_state,
+      addr_zip: data.addr_zip,
+      email: data.email,
+      name: name,
+      uni: data.uni,
+      uni_color: data.uni_color,
+    });
+
+    dispatch(reloadProf(true))
+
+    navigation.goBack();
+  }
+
+  async function getCurrUni() {
+    const reference = ref(db, "users_real/" + uid)
+    const snapshot = await get(reference)
+    const data = snapshot.val()
+
+    setUniversity(data.uni)
+  }
+
+  useEffect(() => {
+    getCurrUni()
+  })
 
   return (
     <View style={styles.body}>
@@ -98,14 +140,15 @@ const EditProfileScreen = () => {
           <Label style={styles.label}>University</Label>
           <InputField
             placeholder="Add University"
+            editable={false}
             style={styles.inputField}
             defaultValue={university}
             setValue={setUniversity}
           />
-          <Label style={styles.label}>Address</Label>
+          <Label style={styles.label}>Street Address</Label>
           <InputField
             multiline
-            placeholder="Add Address"
+            placeholder="Add Street Address"
             style={[styles.inputField, styles.adressInput]}
             value={address}
             defaultValue={address}
@@ -113,14 +156,7 @@ const EditProfileScreen = () => {
           />
           <AppButton
             onPress={() =>
-              saveProfile({
-                dispatch,
-                navigation,
-                name,
-                university,
-                address,
-                image,
-              })
+              updateProfile()
             }
             style={styles.button}
           >

@@ -1,9 +1,12 @@
-import React from "react";
+import { get, getDatabase, ref } from "firebase/database";
+import React, { useEffect, useState } from "react";
 import { Image, Pressable, Text, View } from "react-native";
 import { Rating } from "react-native-ratings";
 import Images from "../../assets";
 import AppButton from "../../components/AppButton";
-import { useAppSelector } from "../../redux/hooks";
+import app from "../../lib/db";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { reloadProf } from "../../redux/slices/uidReducer";
 import Colors from "../../theme/Colors";
 import { useProfileNavigation } from "../../utils/hooks";
 import InputField from "./components/InputField";
@@ -11,12 +14,13 @@ import Label from "./components/Label";
 import styles from "./styles/ViewProfileScreenStyles";
 
 const setUniversityImage = (university: any) => {
-  if (university === "Georgia Tech") {
-    return Images.gtLogo;
-  } else if (university === "Emory University") {
-    return Images.emoryLogo;
-  } else {
-    return Images.universityIcon;
+  switch (university) {
+    case "Georgia Tech":
+      return Images.gtLogo;
+    case "Emory University":
+      return Images.emoryLogo;
+    default:
+      return Images.universityIcon;
   }
 };
 
@@ -25,6 +29,41 @@ const ViewProfileScreen = () => {
   const { name, address, university, image } = useAppSelector(
     (store) => store.profile
   );
+  const { uid } = useAppSelector(
+    (store) => store.uid
+  );
+
+  const [userName, setName] = useState("");
+  const [addr, setAddr] = useState("");
+  const [uni, setUniversity] = useState("");
+
+  const dispatch = useAppDispatch()
+  const { reload } = useAppSelector((store) => store.uid);
+
+  const db = getDatabase(app)
+
+  async function getProfInfo() {
+    const reference = ref(db, "users_real/" + uid)
+    const snapshot = await get(reference)
+    const data = snapshot.val()
+
+    setName(data.name)
+    setAddr(data.addr_street + ", " + data.addr_city + ", " + data.addr_state + ", " + data.addr_zip)
+    setUniversity(data.uni)
+  }
+
+  useEffect(() => {
+    if (reload) {
+      setTimeout(() => {
+        getProfInfo();
+        dispatch(reloadProf(false));
+      }, 2000);
+    }
+  }, [reload]);
+
+  useEffect(() => {
+    getProfInfo()
+  }, [])
 
   return (
     <View style={styles.body}>
@@ -45,7 +84,7 @@ const ViewProfileScreen = () => {
             placeholder="Add Name"
             editable={false}
             style={styles.inputField}
-            value={name}
+            value={userName}
           />
           <Label style={styles.label}>Address</Label>
           <InputField
@@ -53,7 +92,7 @@ const ViewProfileScreen = () => {
             editable={false}
             multiline
             style={[styles.inputField, styles.adressInput]}
-            value={address}
+            value={addr}
           />
           <AppButton
             onPress={() => navigation.navigate("RequestsScreen")}
@@ -72,7 +111,7 @@ const ViewProfileScreen = () => {
               : { uri: image }
           }
         />
-        <Image style={styles.logo} source={setUniversityImage(university)} />
+        <Image style={styles.logo} source={setUniversityImage(uni)} />
       </View>
     </View>
   );

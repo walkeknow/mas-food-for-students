@@ -19,6 +19,8 @@ import { getAuth, signInWithEmailAndPassword, deleteUser } from "firebase/auth";
 import app from "../lib/db";
 import Label from "./profile/components/Label";
 import AppButton from "../components/AppButton";
+import { useAppDispatch } from "../redux/hooks";
+import { updateUID } from "../redux/slices/uidReducer";
 
 /***
  * This is relatively easy enough to understand
@@ -36,6 +38,8 @@ const SignInScreen = ({ navigation, route }: any) => {
   const db = getDatabase(app);
   const auth = getAuth(app);
 
+  const dispatch = useAppDispatch()
+
   function handlePress() {
     const any_empty = email === "" || password === "";
     if (any_empty) {
@@ -48,6 +52,8 @@ const SignInScreen = ({ navigation, route }: any) => {
 
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
+        const uid = userCredential.user.uid
+        dispatch(updateUID(uid))
         navigation.replace("Tabs");
       })
       .catch((error) => {
