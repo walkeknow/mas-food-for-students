@@ -1,10 +1,7 @@
-import { StyleSheet } from "react-native";
+import { ScaledSheet } from "react-native-size-matters";
 import Colors from "../../theme/Colors";
-import {
-  moderateScale
-} from "react-native-size-matters";
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   body: {
     backgroundColor: Colors.lightBrown,
     alignItems: "stretch",
@@ -20,13 +17,13 @@ const styles = StyleSheet.create({
   defaultbutton: {
     flex: 1,
     padding: 10,
-    margin: 10
+    margin: 10,
   },
   textinput: {
     backgroundColor: Colors.white,
     padding: 10,
     borderRadius: 10,
-    margin: 10
+    margin: 10,
   },
   multilinetextinput: {
     backgroundColor: Colors.white,
@@ -34,7 +31,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     margin: 10,
     height: 107,
-    textAlignVertical: "top"
+    textAlignVertical: "top",
   },
   image: {
     width: 100,
@@ -42,10 +39,10 @@ const styles = StyleSheet.create({
     borderColor: Colors.primaryBlue,
     borderWidth: 7,
     borderRadius: 100,
-    marginTop: 20
+    marginTop: 20,
   },
   center: {
-    alignItems: "center"
+    alignItems: "center",
   },
   button: {
     marginTop: 30,
