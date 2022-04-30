@@ -57,7 +57,12 @@ const SearchScreen = ({ navigation }: any) => {
         const ref_string = "id_" + item.id + "_image";
         const reference_s = sRef(stor, ref_string);
 
-        item_arr[index].image = await getDownloadURL(reference_s);
+        try {
+          item_arr[index].image = await getDownloadURL(reference_s);
+        } catch (e) {
+          const reference_ni = sRef(stor, "no_image")
+          item_arr[index].image = await getDownloadURL(reference_ni);
+        }
 
         const ref_string_un = "users_real/" + item.seller_id + "/name/";
         const reference_un = dRef(db, ref_string_un);
