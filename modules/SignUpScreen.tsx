@@ -24,6 +24,7 @@ import {
 import app from "../lib/db";
 import Label from "./profile/components/Label";
 import AppButton from "../components/AppButton";
+import Colors from "../theme/Colors";
 
 /***
  * This is a bit harder to understand
@@ -131,14 +132,16 @@ const SignUpScreen = ({ navigation, route }: any) => {
   return (
     <>
       <StatusBar />
-      <ScrollView style={{flex: 1}} contentContainerStyle={styles.body}>
+      <ScrollView
+        style={{ flex: 1, backgroundColor: Colors.lightBrown }}
+        contentContainerStyle={styles.SignupBody}
+      >
         <Text style={{ textAlign: "center", fontWeight: "bold", fontSize: 30 }}>
           Sign Up
         </Text>
         <Text style={{ textAlign: "center", fontSize: 17 }}>
           Create an account!
         </Text>
-
         <Label style={styles.name}>Login Information</Label>
         <TextInput
           style={styles.textinput}

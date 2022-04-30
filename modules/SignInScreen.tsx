@@ -58,7 +58,7 @@ const SignInScreen = ({ navigation, route }: any) => {
   return (
     <>
       <StatusBar />
-      <View style={styles.body}>
+      <View style={styles.SignInBody}>
         <Text style={{ textAlign: "center", fontWeight: "bold", fontSize: 30 }}>
           Sign In
         </Text>

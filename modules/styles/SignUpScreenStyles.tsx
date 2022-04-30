@@ -2,7 +2,15 @@ import { ScaledSheet } from "react-native-size-matters";
 import Colors from "../../theme/Colors";
 
 const styles = ScaledSheet.create({
-  body: {
+  SignInBody: {
+    backgroundColor: Colors.lightBrown,
+    alignItems: "stretch",
+    paddingHorizontal: 25,
+    paddingVertical: 60,
+    paddingTop: 120,
+    flex: 1
+  },
+  SignupBody: {
     backgroundColor: Colors.lightBrown,
     alignItems: "stretch",
     paddingHorizontal: 25,
