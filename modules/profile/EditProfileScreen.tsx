@@ -16,7 +16,7 @@ const getImageFromCamera = async (setImage: any) => {
   let permissionResult = await ImagePicker.getCameraPermissionsAsync();
 
   if (permissionResult.status === "granted") {
-    let result = await ImagePicker.launchImageLibraryAsync({
+    let result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
