@@ -11,7 +11,8 @@ export type RootStackParamList = {
 
 export type ProfileStackParamList = {
   ViewProfileScreen: undefined;
-  EditProfileScreen: undefined
+  EditProfileScreen: undefined;
+  RequestsScreen: undefined
 };
 
 export type ItemCardTypes = {
@@ -27,7 +28,7 @@ export type ItemCardTypes = {
     expires: string;
     seller: string;
     seller_id: string;
-    id: number
+    id: number;
   };
 };
 

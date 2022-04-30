@@ -7,7 +7,8 @@ export type InputFieldTypes = {
   multiline?: boolean;
   editable?: boolean;
   defaultValue?: string;
-  setValue: Dispatch<SetStateAction<string>>;
+  setValue?: Dispatch<SetStateAction<string>>;
+  placeholder: string
 };
 
 export type LabelTypes = {

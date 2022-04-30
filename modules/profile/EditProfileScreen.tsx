@@ -7,10 +7,11 @@ import InputField from "./components/InputField";
 import Label from "./components/Label";
 import styles from "./styles/EditProfileScreenStyles";
 import * as ImagePicker from "expo-image-picker";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { editProfile } from "../../redux/slices/profileReducer";
 
-const getImageFromCamera = async (setImage) => {
+const getImageFromCamera = async (setImage: any) => {
   // No permissions request is necessary for launching the image library
-    console.log('camera')
 
   let permissionResult = await ImagePicker.getCameraPermissionsAsync();
 
@@ -30,11 +31,10 @@ const getImageFromCamera = async (setImage) => {
   }
 };
 
-const getImageFromLibrary = async (setImage) => {
-    console.log('library')
+const getImageFromLibrary = async (setImage: any) => {
+  console.log("library");
 
-  
-    // No permissions request is necessary for launching the image library
+  // No permissions request is necessary for launching the image library
   let result = await ImagePicker.launchImageLibraryAsync({
     mediaTypes: ImagePicker.MediaTypeOptions.All,
     allowsEditing: true,
@@ -49,17 +49,39 @@ const getImageFromLibrary = async (setImage) => {
   }
 };
 
+const saveProfile = ({
+  dispatch,
+  navigation,
+  name,
+  university,
+  address,
+  image,
+}: any) => {
+  const probileObj = {
+    image,
+    name,
+    university,
+    address,
+  };
+  dispatch(editProfile(probileObj));
+  navigation.goBack();
+};
+
 const EditProfileScreen = () => {
-  const [name, setName] = useState("Brenda Williams");
-  const [university, setUniversity] = useState(
-    "Georgia Institute of Technology"
-  );
-  const [address, setAddress] = useState(
-    "812 Peachtree St NW,  Atlanta, GA 30302"
-  );
+  const {
+    name: storeName,
+    address: storeAddress,
+    university: storeUniversity,
+    image: storeImage,
+  } = useAppSelector((store) => store.profile);
+
+  const [name, setName] = useState(storeName);
+  const [university, setUniversity] = useState(storeUniversity);
+  const [address, setAddress] = useState(storeAddress);
 
   const navigation = useNavigation();
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState(storeImage);
+  const dispatch = useAppDispatch();
 
   return (
     <View style={styles.body}>
@@ -68,33 +90,52 @@ const EditProfileScreen = () => {
         <View style={styles.form}>
           <Label>Name</Label>
           <InputField
+            placeholder="Add Name"
             style={styles.inputField}
-            defaultValue={"Brenda Williams"}
+            defaultValue={name}
             setValue={setName}
           />
           <Label style={styles.label}>University</Label>
           <InputField
+            placeholder="Add University"
             style={styles.inputField}
-            defaultValue={"Georgia Institute of Technology"}
+            defaultValue={university}
             setValue={setUniversity}
           />
           <Label style={styles.label}>Address</Label>
           <InputField
             multiline
+            placeholder="Add Address"
             style={[styles.inputField, styles.adressInput]}
             value={address}
-            defaultValue={"812 Peachtree St NW,  Atlanta, GA 30302"}
+            defaultValue={address}
             setValue={setAddress}
           />
-          <AppButton onPress={() => navigation.goBack()} style={styles.button}>
+          <AppButton
+            onPress={() =>
+              saveProfile({
+                dispatch,
+                navigation,
+                name,
+                university,
+                address,
+                image,
+              })
+            }
+            style={styles.button}
+          >
             Save
           </AppButton>
         </View>
       </View>
       <View style={styles.centeredView}>
         <Image
-          style={styles.placeholderImage}
-          source={Images.placeholderImage}
+          style={styles.image}
+          source={
+            image === Images.placeholderImage
+              ? Images.placeholderImage
+              : { uri: image }
+          }
         />
         <Pressable style={styles.logo}>
           <Pressable

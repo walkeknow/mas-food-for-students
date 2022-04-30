@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     maxWidth: 240,
+    minWidth: 240
   },
   row: {
     flexDirection: "row",

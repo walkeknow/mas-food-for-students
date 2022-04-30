@@ -55,6 +55,9 @@ const styles = ScaledSheet.create({
     right: "110@s",
     width: 45,
     height: 45,
+    borderRadius: 45,
+    borderColor: Colors.primaryBlue,
+    borderWidth: 5,
   },
   rating: { marginTop: -10 },
   label: {
@@ -65,7 +68,7 @@ const styles = ScaledSheet.create({
   },
   adressInput: {
     height: verticalScale(144),
-    textAlignVertical: 'top'
+    textAlignVertical: "top",
   },
   button: {
     marginTop: verticalScale(20),

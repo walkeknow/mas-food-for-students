@@ -3,7 +3,15 @@ import React from "react";
 import styles from "../styles/InputFieldStyles";
 import { InputFieldTypes } from "../types";
 
-const InputField = ({ value, style, multiline, editable, defaultValue, setValue }: InputFieldTypes) => {
+const InputField = ({
+  value,
+  style,
+  multiline,
+  editable,
+  defaultValue,
+  setValue,
+  placeholder,
+}: InputFieldTypes) => {
   return (
     <TextInput
       defaultValue={defaultValue}
@@ -11,7 +19,12 @@ const InputField = ({ value, style, multiline, editable, defaultValue, setValue 
       multiline={multiline}
       style={[styles.input, style]}
       value={value}
-      onChangeText={(e) => setValue(e)}
+      onChangeText={(e) => {
+        if (setValue) {
+          setValue(e);
+        }
+      }}
+      placeholder={placeholder}
     />
   );
 };

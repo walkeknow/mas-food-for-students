@@ -38,7 +38,7 @@ const styles = ScaledSheet.create({
     color: Colors.primaryBlue,
     marginTop: 20,
   },
-  placeholderImage: {
+  image: {
     width: moderateScale(119),
     height: moderateScale(119),
     borderColor: Colors.primaryBlue,

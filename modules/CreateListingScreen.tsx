@@ -8,11 +8,16 @@ import styles from "./styles/CreateListingScreenStyles";
 import { FAB } from "react-native-elements";
 import { getDatabase, ref, onValue, set, get, child } from "firebase/database";
 import app from "../lib/db";
+import { useAppSelector } from "../redux/hooks";
 
 const CreateListingScreen = ({ navigation, route }: any) => {
+  const { address: storeAddress, university: storeUniversity } = useAppSelector(
+    (store) => store.profile
+  );
+
   const [name, setName] = useState("");
-  const [university, setUniversity] = useState("");
-  const [address, setAddress] = useState("");
+  const [university, setUniversity] = useState(storeUniversity);
+  const [address, setAddress] = useState(storeAddress);
   const [pickup, setPickup] = useState("");
 
   const [bought, setBought] = useState(new Date());
@@ -93,7 +98,7 @@ const CreateListingScreen = ({ navigation, route }: any) => {
           </View>
           {showBought && (
             <DateTimePicker
-              style={{width: 200, height: 150 }}
+              style={{ width: 200, height: 150 }}
               value={bought}
               mode="date"
               display="default"
