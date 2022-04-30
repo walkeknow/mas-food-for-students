@@ -3,8 +3,9 @@ import { ImageSourcePropType } from "react-native";
 
 
 export type RootStackParamList = {
-  Root: undefined;
+  SignIn: undefined;
   SignUp: undefined;
+  Tabs: undefined;
   Search: undefined;
   Listing: undefined;
   CreateListing: undefined;
