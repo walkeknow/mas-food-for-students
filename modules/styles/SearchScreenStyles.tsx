@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     maxWidth: 240,
+    minWidth: 240
   },
   row: {
     flexDirection: "row",
@@ -43,6 +44,8 @@ const styles = StyleSheet.create({
     maxHeight: 138,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
+    width: 162,
+    height: 138
   },
   cardDescription: {
     height: 92,
