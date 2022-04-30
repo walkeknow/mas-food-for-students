@@ -4,7 +4,6 @@ import Colors from "../../theme/Colors";
 const styles = ScaledSheet.create({
   body: {
     backgroundColor: Colors.lightBrown,
-    flex: 1,
     alignItems: "stretch",
     paddingHorizontal: 25,
     paddingVertical: 60,

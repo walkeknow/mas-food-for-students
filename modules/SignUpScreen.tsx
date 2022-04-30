@@ -11,6 +11,7 @@ import {
   Button,
   Text,
   FlatList,
+  ScrollView,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import styles from "./styles/SignUpScreenStyles";
@@ -130,7 +131,7 @@ const SignUpScreen = ({ navigation, route }: any) => {
   return (
     <>
       <StatusBar />
-      <View style={styles.body}>
+      <ScrollView style={{flex: 1}} contentContainerStyle={styles.body}>
         <Text style={{ textAlign: "center", fontWeight: "bold", fontSize: 30 }}>
           Sign Up
         </Text>
@@ -181,7 +182,7 @@ const SignUpScreen = ({ navigation, route }: any) => {
         <AppButton style={styles.button} onPress={() => handlePress()}>
           Sign Up
         </AppButton>
-      </View>
+      </ScrollView>
     </>
   );
 };
