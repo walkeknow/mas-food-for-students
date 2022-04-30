@@ -111,13 +111,13 @@ const SearchScreen = ({ navigation }: any) => {
         }
       });
     } else {
+      return;
     }
   }
 
   useEffect(() => {
     if (updateListings) {
       setTimeout(() => {
-        console.log("LISTING VAL", updateListings);
         getListings();
         dispatch(updateListingsAction(false));
       }, 2000);
