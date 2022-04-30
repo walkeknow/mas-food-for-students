@@ -48,7 +48,7 @@ const SignInScreen = ({ navigation, route }: any) => {
 
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        navigation.push("Tabs");
+        navigation.replace("Tabs");
       })
       .catch((error) => {
         return Alert.alert("Failed to Sign In", error.code, [{ text: "OK" }]);

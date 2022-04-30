@@ -54,6 +54,8 @@ const SearchScreen = ({ navigation }: any) => {
     setMasterList([]);
     setFilteredList([]);
 
+    console.log("Enter Function", updateListings);
+
     const snapshot = await get(reference_d);
     var item_arr: Array<ItemCardTypes["item"]> = [];
 
@@ -68,7 +70,7 @@ const SearchScreen = ({ navigation }: any) => {
           const reference_s = sRef(stor, ref_string);
 
           const url = await getDownloadURL(reference_s);
-          item_arr[index].image = url
+          item_arr[index].image = url;
 
           const ref_string_item = "food_listings/id_" + item.id;
           const reference_i = dRef(db, ref_string_item);
@@ -114,9 +116,11 @@ const SearchScreen = ({ navigation }: any) => {
 
   useEffect(() => {
     if (updateListings) {
-      console.log("LISTING VAL", updateListings);
-      getListings();
-      dispatch(updateListingsAction(false));
+      setTimeout(() => {
+        console.log("LISTING VAL", updateListings);
+        getListings();
+        dispatch(updateListingsAction(false));
+      }, 2000);
     }
   }, [updateListings]);
 
