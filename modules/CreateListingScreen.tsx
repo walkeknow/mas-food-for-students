@@ -3,23 +3,76 @@ import DateTimePicker, {
 } from "@react-native-community/datetimepicker";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { Alert, TextInput, View, Platform, Button, Text } from "react-native";
+import {
+  Alert,
+  TextInput,
+  View,
+  Platform,
+  Button,
+  Text,
+  Image,
+  ScrollView,
+} from "react-native";
 import styles from "./styles/CreateListingScreenStyles";
 import { FAB } from "react-native-elements";
 import { getDatabase, ref, onValue, set, get, child } from "firebase/database";
+import { getStorage, ref as s_ref, uploadBytes } from "firebase/storage";
 import app from "../lib/db";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { updateListingsAction } from "../redux/slices/profileReducer";
+import * as ImagePicker from "expo-image-picker";
+import Images from "../assets";
+import AppButton from "../components/AppButton";
 
 const CreateListingScreen = ({ navigation, route }: any) => {
   const { address: storeAddress, university: storeUniversity } = useAppSelector(
     (store) => store.profile
   );
 
+  const getImageFromCamera = async (setImage: any) => {
+    // No permissions request is necessary for launching the image library
+
+    let permissionResult = await ImagePicker.getCameraPermissionsAsync();
+
+    if (permissionResult.status === "granted") {
+      let result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [2, 3],
+        quality: 0,
+      });
+
+      console.log(result);
+
+      if (!result.cancelled) {
+        setImage(result.uri);
+      }
+    }
+  };
+
+  const getImageFromLibrary = async (setImage: any) => {
+    console.log("library");
+
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [2, 3],
+      quality: 0,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+
   const [name, setName] = useState("");
   const [university, setUniversity] = useState(storeUniversity);
   const [address, setAddress] = useState(storeAddress);
   const [pickup, setPickup] = useState("");
+  const [image, setImage] = useState(Images.productPlaceholder);
 
   const [bought, setBought] = useState(new Date());
   const [showBought, setShowBought] = useState(false);
@@ -76,10 +129,51 @@ const CreateListingScreen = ({ navigation, route }: any) => {
   return (
     <>
       <StatusBar />
-      <View style={styles.body}>
-        <Text style={{ textAlign: "center", fontWeight: "bold", fontSize: 30 }}>
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.body}>
+        <Text
+          style={{
+            textAlign: "center",
+            fontWeight: "bold",
+            fontSize: 30,
+            marginBottom: 40,
+          }}
+        >
           Create a Listing
         </Text>
+        <View style={styles.center}>
+          <Image
+            style={styles.image}
+            source={
+              image === Images.productPlaceholder
+                ? Images.productPlaceholder
+                : { uri: image }
+            }
+          />
+        </View>
+        <View style={styles.sidebyside}>
+          <View style={styles.defaultbutton}>
+            <Button
+              title={"Select Image"}
+              onPress={() =>
+                Alert.alert("Choose Image From:", "", [
+                  {
+                    text: "Camera",
+                    onPress: () => getImageFromCamera(setImage),
+                  },
+                  {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel",
+                  },
+                  {
+                    text: "Photos",
+                    onPress: () => getImageFromLibrary(setImage),
+                  },
+                ])
+              }
+            ></Button>
+          </View>
+        </View>
         <TextInput
           style={styles.textinput}
           placeholder="Product Name"
@@ -141,12 +235,13 @@ const CreateListingScreen = ({ navigation, route }: any) => {
           onChangeText={(newPickup) => setPickup(newPickup)}
           value={pickup}
         />
-        <FAB
-          title="Confirm"
-          placement="right"
-          onPress={() => {
+        <AppButton
+          style={styles.button}
+          onPress={async () => {
             let error_message = "";
             if (name === "") error_message += "Please enter a product name.\n";
+            if (image === Images.productPlaceholder)
+              error_message += "Please choose a product image.\n";
             if (university === "")
               error_message += "Please enter a university.\n";
             if (formatBought === "invalid")
@@ -164,11 +259,19 @@ const CreateListingScreen = ({ navigation, route }: any) => {
               ]);
             } else {
               const id_ref = ref(db, "/global_id");
+              let blob = await fetch(image).then((r) => r.blob());
               get(id_ref).then((snapshot) => {
                 if (snapshot.exists()) {
                   let id: number = snapshot.val();
                   set(id_ref, id + 1);
                   const listing_ref = ref(db, "food_listings/id_" + id);
+                  const storage_ref = s_ref(
+                    getStorage(),
+                    "id_" + id + "_image"
+                  );
+                  uploadBytes(storage_ref, blob).then((snapshot) => {
+                    console.log("tried to upload: " + image);
+                  });
                   set(listing_ref, {
                     address: address,
                     bought: formatBought,
@@ -179,7 +282,7 @@ const CreateListingScreen = ({ navigation, route }: any) => {
                     name: name,
                     pickup: "\n" + pickup,
                     // TODO: get the current user's name
-                    seller: "?",
+                    seller_id: "?",
                     tagColor: "#FFFFFF",
                     university: university,
                   });
@@ -204,15 +307,18 @@ const CreateListingScreen = ({ navigation, route }: any) => {
                 [
                   {
                     text: "Return Home",
-                    onPress: () => navigation.navigate("Tabs", {screen: "Search"}),
+                    onPress: () =>
+                      navigation.navigate("Tabs", { screen: "Search" }),
                     style: "cancel",
                   },
                 ]
               );
             }
           }}
-        />
-      </View>
+        >
+          Confirm
+        </AppButton>
+      </ScrollView>
     </>
   );
 };

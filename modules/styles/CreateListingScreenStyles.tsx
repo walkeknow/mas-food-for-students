@@ -1,5 +1,8 @@
 import { StyleSheet } from "react-native";
 import Colors from "../../theme/Colors";
+import {
+  moderateScale
+} from "react-native-size-matters";
 
 const styles = StyleSheet.create({
   body: {
@@ -33,6 +36,15 @@ const styles = StyleSheet.create({
     margin: 10,
     height: 107,
     textAlignVertical: "top"
+  },
+  image: {
+    width: 100,
+    height: 100,
+    borderColor: Colors.primaryBlue,
+    borderWidth: 7,
+  },
+  center: {
+    alignItems: "center"
   },
 });
 
