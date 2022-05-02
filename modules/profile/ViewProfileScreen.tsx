@@ -26,7 +26,7 @@ const setUniversityImage = (university: any) => {
 
 const ViewProfileScreen = () => {
   const navigation = useProfileNavigation();
-  const { name, address, university, image } = useAppSelector(
+  const { image } = useAppSelector(
     (store) => store.profile
   );
   const { uid } = useAppSelector(

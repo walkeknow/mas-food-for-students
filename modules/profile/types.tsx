@@ -12,6 +12,6 @@ export type InputFieldTypes = {
 };
 
 export type LabelTypes = {
-  style?: RegisteredStyle<any>;
+  style?: RegisteredStyle<any> | RegisteredStyle<any>[];
   children: ReactChild;
 };

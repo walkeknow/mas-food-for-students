@@ -10,8 +10,9 @@ const Colors = {
   shadow: "rgba(0, 0, 0, 0.25)",
   whiteE5: "#e5e5e5",
   red: "#e24848",
-  darkGreen : "rgba(58, 100, 60, 1)",
-  darkRed: "rgba(122, 35, 35, 1)"
+  darkGreen: "rgba(58, 100, 60, 1)",
+  darkRed: "rgba(122, 35, 35, 1)",
+  darkYellow: "#8e7c2c",
 };
 
 export default Colors;

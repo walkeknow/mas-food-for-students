@@ -78,9 +78,7 @@ const EditProfileScreen = () => {
     image: storeImage,
   } = useAppSelector((store) => store.profile);
 
-  const { uid } = useAppSelector(
-    (store) => store.uid
-  );
+  const { uid } = useAppSelector((store) => store.uid);
 
   const [name, setName] = useState(storeName);
   const [university, setUniversity] = useState(storeUniversity);
@@ -90,13 +88,13 @@ const EditProfileScreen = () => {
   const [image, setImage] = useState(storeImage);
   const dispatch = useAppDispatch();
 
-  const db = getDatabase(app)
+  const db = getDatabase(app);
 
   async function updateProfile() {
-    const reference = ref(db, "users_real/" + uid)
-    const snapshot = await get(reference)
-    const data = snapshot.val()
-    
+    const reference = ref(db, "users_real/" + uid);
+    const snapshot = await get(reference);
+    const data = snapshot.val();
+
     set(reference, {
       addr_street: address,
       addr_city: data.addr_city,
@@ -108,22 +106,28 @@ const EditProfileScreen = () => {
       uni_color: data.uni_color,
     });
 
-    dispatch(reloadProf(true))
+    const profileObj = {
+      image,
+    };
+
+    dispatch(editProfile(profileObj));
+
+    dispatch(reloadProf(true));
 
     navigation.goBack();
   }
 
   async function getCurrUni() {
-    const reference = ref(db, "users_real/" + uid)
-    const snapshot = await get(reference)
-    const data = snapshot.val()
+    const reference = ref(db, "users_real/" + uid);
+    const snapshot = await get(reference);
+    const data = snapshot.val();
 
-    setUniversity(data.uni)
+    setUniversity(data.uni);
   }
 
   useEffect(() => {
-    getCurrUni()
-  })
+    getCurrUni();
+  });
 
   return (
     <View style={styles.body}>
@@ -154,12 +158,7 @@ const EditProfileScreen = () => {
             defaultValue={address}
             setValue={setAddress}
           />
-          <AppButton
-            onPress={() =>
-              updateProfile()
-            }
-            style={styles.button}
-          >
+          <AppButton onPress={() => updateProfile()} style={styles.button}>
             Save
           </AppButton>
         </View>

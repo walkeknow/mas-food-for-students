@@ -139,11 +139,13 @@ const SignUpScreen = ({ navigation, route }: any) => {
         <TextInput
           style={styles.textinput}
           placeholder="Password*"
+          secureTextEntry
           onChangeText={(newPassword) => setPassword(newPassword)}
           value={password}
         />
         <TextInput
           style={styles.textinput}
+          secureTextEntry
           placeholder="Re-Enter Password*"
           onChangeText={(newRePassword) => setRePassword(newRePassword)}
           value={re_password}

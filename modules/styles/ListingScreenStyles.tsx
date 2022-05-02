@@ -12,8 +12,8 @@ const styles = StyleSheet.create({
   buttonbody: {
     backgroundColor: Colors.lightBrown,
     paddingLeft: 200,
-    paddingBottom: 50,
-    paddingRight: 50
+    paddingBottom: 10,
+    paddingRight: 50,
   },
   row: {
     flexDirection: "row",
@@ -41,13 +41,13 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     width: 300,
-    height: 200
+    height: 200,
   },
   cardDescription: {
     backgroundColor: Colors.primaryBlue,
     padding: 8,
-    justifyContent: 'space-between',
-    paddingBottom: 16
+    justifyContent: "space-between",
+    paddingBottom: 16,
   },
   listingDescription: {
     height: 200,
@@ -55,19 +55,19 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 10,
     backgroundColor: Colors.white,
     padding: 8,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     paddingBottom: 16,
-    maxWidth: 300
+    maxWidth: 300,
   },
   cardTopName: {
     flexDirection: "row",
-    justifyContent: 'center',
+    justifyContent: "center",
     backgroundColor: Colors.primaryBlue,
-    padding: 8
+    padding: 8,
   },
   cardTopRow: {
     flexDirection: "row",
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     backgroundColor: Colors.gold,
     padding: 8,
     borderRadius: 4,
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     fontStyle: "normal",
     letterSpacing: 0,
     color: Colors.white,
-    maxWidth: 100
+    maxWidth: 100,
   },
   itemNameBlack: {
     fontSize: 14,
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     fontStyle: "normal",
     letterSpacing: 0,
     color: Colors.black,
-    maxWidth: 100
+    maxWidth: 100,
   },
   itemTopName: {
     fontSize: 18,
@@ -95,19 +95,23 @@ const styles = StyleSheet.create({
     fontStyle: "normal",
     letterSpacing: 0,
     color: Colors.white,
-    maxWidth: 100
+    maxWidth: 100,
   },
   tagContainer: {
-    flexDirection:'row',
+    flexDirection: "row",
   },
   tag: {
     flexShrink: 1,
-    borderRadius: 10
+    borderRadius: 10,
   },
   tagText: {
     paddingVertical: 2,
     paddingHorizontal: 7,
-    fontWeight: '600',
+    fontWeight: "600",
+  },
+  button: {
+    marginTop: 400,
+    width: 300,
   },
 });
 

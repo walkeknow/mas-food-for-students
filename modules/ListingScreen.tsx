@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import styles from "./styles/ListingScreenStyles";
 import { ItemCardTypes } from "../utils/types";
+import AppButton from "../components/AppButton";
 
 const ListingCard = ({ item }: ItemCardTypes) => {
   return (
@@ -56,26 +57,28 @@ const ListingScreen = ({ navigation, route }: any) => {
       <StatusBar />
       <View style={styles.body}>
         <ListingCard item={item} />
-      </View>
-      <Button
-        title="Request"
-        onPress={() =>
-          Alert.alert(
-            "Request success!",
-            "You will be notified when " + item.seller + " approves!",
-            [
-              {
-                text: "Return Home",
-                onPress: () => {
-                  navigation.navigate("Tabs", { screen: "Search" });
+        <AppButton
+          style={styles.button}
+          onPress={() =>
+            Alert.alert(
+              "Request success!",
+              "You will be notified when " + item.seller + " approves!",
+              [
+                {
+                  text: "Return Home",
+                  onPress: () => {
+                    navigation.navigate("Tabs", { screen: "Search" });
+                  },
+                  style: "cancel",
                 },
-                style: "cancel",
-              },
-              { text: "OK" },
-            ]
-          )
-        }
-      ></Button>
+                { text: "OK" },
+              ]
+            )
+          }
+        >
+          Request
+        </AppButton>
+      </View>
     </>
   );
 };

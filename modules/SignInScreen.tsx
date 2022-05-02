@@ -79,6 +79,7 @@ const SignInScreen = ({ navigation, route }: any) => {
         <TextInput
           style={styles.textinput}
           placeholder="Password*"
+          secureTextEntry
           onChangeText={(newPassword) => setPassword(newPassword)}
           value={password}
         />

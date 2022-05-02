@@ -8,6 +8,15 @@ const styles = ScaledSheet.create({
     backgroundColor: Colors.lightBrown,
     flex: 1,
   },
+  sectionTwo: {
+    marginTop: 36,
+  },
+  label: {
+    marginBottom: 17,
+  },
+  rateText: {
+    color: Colors.darkYellow,
+  },
   item: {
     flexDirection: "row",
     borderRadius: 10,
@@ -46,6 +55,12 @@ const styles = ScaledSheet.create({
   greenButton: {
     flex: 1,
     backgroundColor: Colors.green,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  yellowButton: {
+    flex: 1,
+    backgroundColor: Colors.yellow,
     alignItems: "center",
     justifyContent: "center",
   },
