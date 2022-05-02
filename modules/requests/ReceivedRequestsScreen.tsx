@@ -67,7 +67,7 @@ const Item = ({ item, getListings }: any) => {
     <View style={styles.item}>
       <Image source={{ uri: item.item_info.image }} style={styles.image} />
       <View style={styles.description}>
-        <Text style={styles.text}>{item.item_info.seller}</Text>
+        <Text style={styles.text}>{item.requester}</Text>
         <Text style={styles.boldText}>Contact:</Text>
         <Text style={styles.text}>{item.email}</Text>
       </View>

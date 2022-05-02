@@ -60,8 +60,6 @@ const ListingScreen = ({ navigation, route }: any) => {
     (store) => store.uid
   );
 
-  console.log(uid)
-
   const db = getDatabase(app)
   const reference_u = ref(db, "users_real/" + uid)
   const reference_r = ref(db, "requests/received/" + item.seller_id + "/id_" + item.id + "/" + uid)
