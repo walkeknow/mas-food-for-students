@@ -1,14 +1,14 @@
 import { get, getDatabase, ref } from "firebase/database";
 import React, { useEffect, useState } from "react";
-import { Image, Pressable, Text, View } from "react-native";
+import { Image, Pressable, ScrollView, Text, View } from "react-native";
 import { Rating } from "react-native-ratings";
 import Images from "../../assets";
 import AppButton from "../../components/AppButton";
 import app from "../../lib/db";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { reloadProf } from "../../redux/slices/uidReducer";
+import { reloadProf, resetProfileData } from "../../redux/slices/uidReducer";
 import Colors from "../../theme/Colors";
-import { useProfileNavigation } from "../../utils/hooks";
+import { useAppNavigation, useProfileNavigation } from "../../utils/hooks";
 import InputField from "./components/InputField";
 import Label from "./components/Label";
 import styles from "./styles/ViewProfileScreenStyles";
@@ -17,8 +17,10 @@ const setUniversityImage = (university: any) => {
   switch (university) {
     case "Georgia Tech":
       return Images.gtLogo;
-    case "Emory University":
-      return Images.emoryLogo;
+    case "Georgia Southern":
+      return Images.gsuLogo;
+    case "University of Georgia":
+      return Images.ugaLogo;
     default:
       return Images.universityIcon;
   }
@@ -26,6 +28,7 @@ const setUniversityImage = (university: any) => {
 
 const ViewProfileScreen = () => {
   const navigation = useProfileNavigation();
+  const mainNav = useAppNavigation();
   const { image } = useAppSelector(
     (store) => store.profile
   );
@@ -78,30 +81,41 @@ const ViewProfileScreen = () => {
           imageSize={30}
           tintColor={Colors.lightBrown}
         />
-        <View style={styles.form}>
-          <Label>Name</Label>
-          <InputField
-            placeholder="Add Name"
-            editable={false}
-            style={styles.inputField}
-            value={userName}
-          />
-          <Label style={styles.label}>Address</Label>
-          <InputField
-            placeholder="Add Address"
-            editable={false}
-            multiline
-            style={[styles.inputField, styles.adressInput]}
-            value={addr}
-          />
-          <AppButton
-            onPress={() => navigation.navigate("RequestsScreen")}
-            style={styles.button}
-            disabled={false}
-          >
-            View Requests
-          </AppButton>
-        </View>
+        <ScrollView>
+          <View style={styles.form}>
+            <Label>Name</Label>
+            <InputField
+              placeholder="Add Name"
+              editable={false}
+              style={styles.inputField}
+              value={userName}
+            />
+            <Label style={styles.label}>Address</Label>
+            <InputField
+              placeholder="Add Address"
+              editable={false}
+              multiline
+              style={[styles.inputField, styles.adressInput]}
+              value={addr}
+            />
+            <AppButton
+              onPress={() => navigation.navigate("RequestsScreen")}
+              style={styles.button}
+              disabled={false}
+            >
+              View Requests
+            </AppButton>
+            <AppButton
+              onPress={() => {
+                mainNav.replace("SignIn")
+              }}
+              style={styles.button}
+              disabled={false}
+            >
+              Sign Out
+            </AppButton>
+          </View>
+        </ScrollView>
       </View>
       <View style={styles.centeredView}>
         <Image

@@ -60,6 +60,8 @@ const ListingScreen = ({ navigation, route }: any) => {
     (store) => store.uid
   );
 
+  console.log(uid)
+
   const db = getDatabase(app)
   const reference_u = ref(db, "users_real/" + uid)
   const reference_r = ref(db, "requests/received/" + item.seller_id + "/id_" + item.id + "/" + uid)
@@ -115,7 +117,7 @@ const ListingScreen = ({ navigation, route }: any) => {
         <ListingCard item={item} />
         <AppButton
           style={styles.button}
-          disabled={uid === (item.seller_id + 1)}
+          disabled={uid === item.seller_id}
           onPress={async () => await handleRequest()}
         >
           Request

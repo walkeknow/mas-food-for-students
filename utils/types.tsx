@@ -14,7 +14,8 @@ export type RootStackParamList = {
 export type ProfileStackParamList = {
   ViewProfileScreen: undefined;
   EditProfileScreen: undefined;
-  RequestsScreen: undefined
+  RequestsScreen: undefined;
+  SignInScreen: undefined;
 };
 
 export type ItemCardTypes = {
