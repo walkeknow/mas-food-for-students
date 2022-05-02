@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   button: {
-    marginTop: 400,
+    marginTop: 350,
     width: 300,
   },
 });

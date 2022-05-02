@@ -97,6 +97,7 @@ const ViewProfileScreen = () => {
           <AppButton
             onPress={() => navigation.navigate("RequestsScreen")}
             style={styles.button}
+            disabled={false}
           >
             View Requests
           </AppButton>

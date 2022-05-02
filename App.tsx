@@ -109,7 +109,7 @@ export default function App() {
       <RootSiblingParent>
         <NavigationContainer>
           <RootStack.Navigator>
-          {/* <RootStack.Screen
+          <RootStack.Screen
               options={{ headerTransparent: true, headerTitle: "" }}
               name="SignIn"
               component={SignInScreen}
@@ -118,7 +118,7 @@ export default function App() {
               options={{ headerTransparent: true, headerTitle: "" }}
               name="SignUp"
               component={SignUpScreen}
-            /> */}
+            />
             <RootStack.Screen
               options={{ headerTransparent: true, headerTitle: "" }}
               name="Tabs"

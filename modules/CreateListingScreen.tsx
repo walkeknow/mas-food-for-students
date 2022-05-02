@@ -229,6 +229,7 @@ const CreateListingScreen = ({ navigation, route }: any) => {
         />
         <AppButton
           style={styles.button}
+          disabled={false}
           onPress={async () => {
             let error_message = "";
             if (name === "") error_message += "Please enter a product name.\n";
@@ -255,6 +256,7 @@ const CreateListingScreen = ({ navigation, route }: any) => {
                   set(id_ref, id + 1);
 
                   const listing_ref = ref(db, "food_listings/id_" + id);
+                  const req_state_ref = ref(db, "req_state/id_" + id);
                   const storage_ref = s_ref(
                     getStorage(),
                     "id_" + id + "_image"
@@ -269,7 +271,6 @@ const CreateListingScreen = ({ navigation, route }: any) => {
                     const data = snapshot.val()
 
                     set(listing_ref, {
-                      address: data.addr_street + ", " + data.addr_city + ", " + data.addr_state + ", " + data.addr_zip,
                       bought: formatBought,
                       // TODO: get distance somehow
                       distance: "? mi",
@@ -278,12 +279,13 @@ const CreateListingScreen = ({ navigation, route }: any) => {
                       id: id,
                       name: name,
                       pickup: "\n" + pickup,
-                      // TODO: get the current user's name
                       seller_id: uid,
                       tagColor: data.uni_color,
                       university: data.uni,
                     });
                   })
+
+                  set(req_state_ref, "pending")
                 } else {
                   return Alert.alert(
                     "Failed to retrive item id!",

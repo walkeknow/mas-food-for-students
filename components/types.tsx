@@ -5,4 +5,5 @@ export type AppButtonTypes = {
     children: ReactChild;
     style: RegisteredStyle<any>;
     onPress: (event: GestureResponderEvent) => void
+    disabled: boolean
 }

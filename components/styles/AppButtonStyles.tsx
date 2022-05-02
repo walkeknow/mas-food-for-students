@@ -14,6 +14,18 @@ const styles = ScaledSheet.create({
     shadowOpacity: 1,
     elevation: 3,
   },
+  dis_button: {
+    borderRadius: 10,
+    backgroundColor: "#BBBBBB",
+    shadowColor: Colors.shadow,
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowRadius: 4,
+    shadowOpacity: 1,
+    elevation: 3,
+  },
   buttonText: {
     fontSize: 18,
     fontWeight: "bold",

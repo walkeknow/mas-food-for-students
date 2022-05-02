@@ -31,7 +31,6 @@ const styles = ScaledSheet.create({
     width: 143,
   },
   text: {
-    fontFamily: "Poppins",
     fontSize: 14,
     fontWeight: "normal",
     fontStyle: "normal",
@@ -40,7 +39,6 @@ const styles = ScaledSheet.create({
     color: "#000000",
   },
   boldText: {
-    fontFamily: "RobotoSlab",
     fontSize: 14,
     fontWeight: "bold",
     fontStyle: "normal",
@@ -71,13 +69,14 @@ const styles = ScaledSheet.create({
     justifyContent: "center",
   },
   image: {
+    maxWidth: 108,
+    maxHeight: 113,
     height: 113,
     width: 108,
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
   },
   buttonText: {
-    fontFamily: "Poppins",
     fontSize: 14,
     fontWeight: "bold",
     fontStyle: "normal",

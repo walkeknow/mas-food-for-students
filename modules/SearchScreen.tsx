@@ -54,14 +54,24 @@ const SearchScreen = ({ navigation }: any) => {
     setMasterList([]);
     setFilteredList([]);
 
-    console.log("Enter Function", updateListings);
-
     const snapshot = await get(reference_d);
     var item_arr: Array<ItemCardTypes["item"]> = [];
+    var req_state_arr: Array<string> = []
+
+    const reference_req = dRef(db, "req_state")
+    const snapshot_req = await get(reference_req)
+
+    if (snapshot_req) {
+      snapshot_req.forEach(function (child) {
+        req_state_arr.push(child.val());
+      });
+    }
 
     if (snapshot) {
       snapshot.forEach(function (child) {
-        item_arr.push(child.val());
+        if (req_state_arr[child.val().id - 1] !== "approved") {
+          item_arr.push(child.val());
+        }
       });
 
       item_arr.forEach(async function (item, index) {
@@ -75,7 +85,6 @@ const SearchScreen = ({ navigation }: any) => {
           const ref_string_item = "food_listings/id_" + item.id;
           const reference_i = dRef(db, ref_string_item);
           set(reference_i, {
-            address: item_arr[index].address,
             bought: item_arr[index].bought,
             distance: item_arr[index].distance,
             expires: item_arr[index].expires,
@@ -89,11 +98,13 @@ const SearchScreen = ({ navigation }: any) => {
           });
         }
 
-        const ref_string_un = "users_real/" + item.seller_id + "/name/";
+        const ref_string_un = "users_real/" + item.seller_id;
         const reference_un = dRef(db, ref_string_un);
         const snapshot = await get(reference_un);
+        const data = snapshot.val();
 
-        item_arr[index].seller = snapshot.val();
+        item_arr[index].seller = data.name;
+        item_arr[index].address = data.addr_street + ", " + data.addr_city + ", " + data.addr_state + ", " + data.addr_zip
 
         if (item_arr[index].image && snapshot) {
           setFilteredList((list) => {
@@ -157,7 +168,7 @@ const SearchScreen = ({ navigation }: any) => {
           numColumns={2}
           renderItem={({ item }) => (
             <TouchableOpacity
-              onPress={() => navigation.push("Listing", { item: item })}
+              onPress={() => navigation.push("Listing", { item: item, refresh: getListings })}
             >
               <ItemCard item={item} />
             </TouchableOpacity>

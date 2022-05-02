@@ -83,7 +83,7 @@ const SignInScreen = ({ navigation, route }: any) => {
           onChangeText={(newPassword) => setPassword(newPassword)}
           value={password}
         />
-        <AppButton style={styles.button} onPress={() => handlePress()}>
+        <AppButton disabled={false} style={styles.button} onPress={() => handlePress()}>
           Sign In
         </AppButton>
         <Text style={styles.hintText} onPress={() => navigation.push("SignUp")}>

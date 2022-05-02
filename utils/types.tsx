@@ -34,9 +34,16 @@ export type ItemCardTypes = {
   };
 };
 
-export type RequestCardTypes = {
-  item: ItemCardTypes["item"];
+export type ReceivedRequestCardTypes = {
+  item_info: ItemCardTypes["item"];
+  requester: string;
+  email: string;
+}
+
+export type SentRequestCardTypes = {
+  item_info: ItemCardTypes["item"];
   state: string;
+  email: string;
 }
 
 export type User = {

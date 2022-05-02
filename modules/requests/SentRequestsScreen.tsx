@@ -1,61 +1,105 @@
 import { View, Text, FlatList, Image, Pressable } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DummyLists from "../../utils/DummyLists";
 import styles from "./styles/RequestStyles";
 import Toast from "react-native-root-toast";
 import Label from "../profile/components/Label";
+import { SentRequestCardTypes } from "../../utils/types";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { get, getDatabase, ref } from "firebase/database";
+import app from "../../lib/db";
+import { updateListingsAction } from "../../redux/slices/profileReducer";
 
-const PendingItem = ({ item, setPendingItemList }: any) => {
+const PendingItem = ({ item }: any) => {
   return (
     <View style={styles.item}>
-      <Image source={item.image} style={styles.image} />
+      <Image source={{ uri: item.item_info.image }} style={styles.image} />
       <View style={styles.description}>
-        <Text style={styles.text}>{item.seller}</Text>
-        <Text style={styles.boldText}>Pickup</Text>
-        <Text style={styles.text}>{item.pickup}</Text>
+        <Text style={styles.text}>{item.item_info.seller}</Text>
+        <Text style={styles.boldText}>Status:</Text>
+        <Text style={styles.text}>{item.state}...</Text>
       </View>
     </View>
   );
 };
 
-const CompletedItem = ({ item, setCompletedItemList }: any) => {
+const CompletedItem = ({ item }: any) => {
   return (
     <View style={styles.item}>
-      <Image source={item.image} style={styles.image} />
+      <Image source={{ uri: item.item_info.image }} style={styles.image} />
       <View style={styles.description}>
-        <Text style={styles.text}>{item.seller}</Text>
-        <Text style={styles.boldText}>Completed</Text>
-        <Text style={styles.text}>{item.pickup}</Text>
+        <Text style={styles.text}>{item.item_info.seller}</Text>
+        {(item.state === "Approved") && <Text style={styles.text}>{item.email}</Text>}
+        <Text style={styles.boldText}>Status: {item.state}</Text>
       </View>
-      <View style={styles.buttons}>
+      {(item.state === "Approved") && <View style={styles.buttons}>
         <Pressable
-          onPress={() =>
-            setCompletedItemList((list: any) => {
-              const tempList = list.filter((oldItem: any) => {
-                return oldItem.id !== item.id;
-              });
-              Toast.show("Feature Coming Soon!", {
-                duration: Toast.durations.SHORT,
-              });
-              return tempList;
-            })
-          }
+          onPress={() => {
+            Toast.show("Feature Coming Soon!", {
+              duration: Toast.durations.SHORT,
+            });
+          }}
           style={styles.yellowButton}
         >
           <Text style={[styles.buttonText, styles.rateText]}>Rate</Text>
         </Pressable>
-      </View>
+      </View>}
     </View>
   );
 };
 
 const SentRequestsScreen = () => {
-  const [pendingItemList, setPendingItemList] = useState(
-    DummyLists.pendingItemList
-  );
-  const [completedItemList, setCompletedItemList] = useState(
-    DummyLists.completedItemList
-  );
+  const [pendingItemList, setPendingItemList] = useState<Array<SentRequestCardTypes>>([])
+  const [completedItemList, setCompletedItemList] = useState<Array<SentRequestCardTypes>>([])
+  const { updateListings } = useAppSelector((store) => store.profile);
+  const { uid } = useAppSelector((store) => store.uid);
+  const dispatch = useAppDispatch();
+
+  const db = getDatabase(app);
+  const reference_r = ref(db, "requests/sent/" + uid + "/pending");
+
+  async function getListings() {
+    setPendingItemList([])
+    setCompletedItemList([])
+
+    const snapshot = await get(reference_r);
+    var item_arr: Array<SentRequestCardTypes> = [];
+    var pending_arr: Array<SentRequestCardTypes> = [];
+    var completed_arr: Array<SentRequestCardTypes> = [];
+
+    if (snapshot) {
+      snapshot.forEach(function (item) {
+        item.forEach(function (req_user) {
+          item_arr.push(req_user.val());
+        })
+      });
+
+      item_arr.forEach(function (item) {
+        if (item.state === "Pending") {
+          pending_arr.push(item)
+        } else {
+          completed_arr.push(item)
+        }
+      })
+
+      setPendingItemList(pending_arr)
+      setCompletedItemList(completed_arr)
+    }
+  }
+
+  useEffect(() => {
+    if (updateListings) {
+      setTimeout(() => {
+        getListings();
+        dispatch(updateListingsAction(false));
+      }, 2000);
+    }
+  }, [updateListings]);
+
+  useEffect(() => {
+    getListings();
+  }, []);
+
 
   return (
     <View style={styles.body}>
@@ -65,7 +109,7 @@ const SentRequestsScreen = () => {
           ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
           data={pendingItemList}
           renderItem={({ item }) => (
-            <PendingItem {...{ item, setPendingItemList }} />
+            <PendingItem item={item} />
           )}
         />
       </View>
@@ -75,7 +119,7 @@ const SentRequestsScreen = () => {
           ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
           data={completedItemList}
           renderItem={({ item }) => (
-            <CompletedItem {...{ item, setCompletedItemList }} />
+            <CompletedItem item={item} />
           )}
         />
       </View>
