@@ -8,6 +8,10 @@ const styles = ScaledSheet.create({
     backgroundColor: Colors.lightBrown,
     flex: 1,
   },
+  scrollbody: {
+    backgroundColor: Colors.lightBrown,
+    flex: 1,
+  },
   sectionTwo: {
     marginTop: 36,
   },

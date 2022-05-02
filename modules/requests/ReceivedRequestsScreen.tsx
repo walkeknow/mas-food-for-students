@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Image, Pressable } from "react-native";
+import { View, Text, FlatList, Image, Pressable, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import DummyLists from "../../utils/DummyLists";
 import styles from "./styles/RequestStyles";
@@ -29,8 +29,10 @@ const Item = ({ item, getListings }: any) => {
     const snapshot = await get(email_ref)
     const data = snapshot.val()
 
-    const sent_ref = ref(db, "requests/sent/" + item.requester_id + "/pending/" + uid + "/id_" + item.item_info.id)
-    set(sent_ref, {
+    const sent_ref_p = ref(db, "requests/sent/" + item.requester_id + "/pending/" + uid + "/id_" + item.item_info.id)
+    const sent_ref_c = ref(db, "requests/sent/" + item.requester_id + "/complete/" + uid + "/id_" + item.item_info.id)
+    set(sent_ref_p, {})
+    set(sent_ref_c, {
       email: data,
       item_info: item.item_info,
       state: "Approved",
@@ -51,8 +53,10 @@ const Item = ({ item, getListings }: any) => {
     const snapshot = await get(email_ref)
     const data = snapshot.val()
 
-    const sent_ref = ref(db, "requests/sent/" + item.requester_id + "/pending/" + uid + "/id_" + item.item_info.id)
-    set(sent_ref, {
+    const sent_ref_p = ref(db, "requests/sent/" + item.requester_id + "/pending/" + uid + "/id_" + item.item_info.id)
+    const sent_ref_c = ref(db, "requests/sent/" + item.requester_id + "/complete/" + uid + "/id_" + item.item_info.id)
+    set(sent_ref_p, {})
+    set(sent_ref_c, {
       email: data,
       item_info: item.item_info,
       state: "Denied",
@@ -64,28 +68,30 @@ const Item = ({ item, getListings }: any) => {
   }
 
   return (
-    <View style={styles.item}>
-      <Image source={{ uri: item.item_info.image }} style={styles.image} />
-      <View style={styles.description}>
-        <Text style={styles.text}>{item.requester}</Text>
-        <Text style={styles.boldText}>Contact:</Text>
-        <Text style={styles.text}>{item.email}</Text>
+    <ScrollView style={styles.scrollbody}>
+      <View style={styles.item}>
+        <Image source={{ uri: item.item_info.image }} style={styles.image} />
+        <View style={styles.description}>
+          <Text style={styles.text}>{item.requester}</Text>
+          <Text style={styles.boldText}>Contact:</Text>
+          <Text style={styles.text}>{item.email}</Text>
+        </View>
+        <View style={styles.buttons}>
+          <Pressable
+            onPress={async () => await handleApprove()}
+            style={styles.greenButton}
+          >
+            <Text style={[styles.buttonText, styles.approveText]}>Approve</Text>
+          </Pressable>
+          <Pressable
+            onPress={async () => await handleDeny()}
+            style={styles.redButton}
+          >
+            <Text style={[styles.buttonText, styles.denyText]}>Deny</Text>
+          </Pressable>
+        </View>
       </View>
-      <View style={styles.buttons}>
-        <Pressable
-          onPress={async () => await handleApprove()}
-          style={styles.greenButton}
-        >
-          <Text style={[styles.buttonText, styles.approveText]}>Approve</Text>
-        </Pressable>
-        <Pressable
-          onPress={async () => await handleDeny()}
-          style={styles.redButton}
-        >
-          <Text style={[styles.buttonText, styles.denyText]}>Deny</Text>
-        </Pressable>
-      </View>
-    </View>
+    </ScrollView>
   );
 };
 

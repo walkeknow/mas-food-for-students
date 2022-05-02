@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Image, Pressable } from "react-native";
+import { View, Text, FlatList, Image, Pressable, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import DummyLists from "../../utils/DummyLists";
 import styles from "./styles/RequestStyles";
@@ -56,33 +56,34 @@ const SentRequestsScreen = () => {
   const dispatch = useAppDispatch();
 
   const db = getDatabase(app);
-  const reference_r = ref(db, "requests/sent/" + uid + "/pending");
+  const reference_rp = ref(db, "requests/sent/" + uid + "/pending");
+  const reference_rc = ref(db, "requests/sent/" + uid + "/complete");
 
   async function getListings() {
     setPendingItemList([])
     setCompletedItemList([])
 
-    const snapshot = await get(reference_r);
-    var item_arr: Array<SentRequestCardTypes> = [];
+    const snapshot_p = await get(reference_rp);
+    const snapshot_c = await get(reference_rc);
     var pending_arr: Array<SentRequestCardTypes> = [];
     var completed_arr: Array<SentRequestCardTypes> = [];
 
-    if (snapshot) {
-      snapshot.forEach(function (item) {
+    if (snapshot_p) {
+      snapshot_p.forEach(function (item) {
         item.forEach(function (req_user) {
-          item_arr.push(req_user.val());
+          pending_arr.push(req_user.val());
         })
       });
 
-      item_arr.forEach(function (item) {
-        if (item.state === "Pending") {
-          pending_arr.push(item)
-        } else {
-          completed_arr.push(item)
-        }
-      })
-
       setPendingItemList(pending_arr)
+    }
+    if (snapshot_c) {
+      snapshot_c.forEach(function (item) {
+        item.forEach(function (req_user) {
+          completed_arr.push(req_user.val());
+        })
+      });
+
       setCompletedItemList(completed_arr)
     }
   }
@@ -102,28 +103,30 @@ const SentRequestsScreen = () => {
 
 
   return (
-    <View style={styles.body}>
-      <View>
-        <Label style={[styles.label]}>Pending</Label>
-        <FlatList
-          ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
-          data={pendingItemList}
-          renderItem={({ item }) => (
-            <PendingItem item={item} />
-          )}
-        />
+    <ScrollView style={styles.scrollbody}>
+      <View style={styles.body}>
+        <View>
+          <Label style={[styles.label]}>Pending</Label>
+          <FlatList
+            ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
+            data={pendingItemList}
+            renderItem={({ item }) => (
+              <PendingItem item={item} />
+            )}
+          />
+        </View>
+        <View>
+          <Label style={[styles.label, styles.sectionTwo]}>Completed</Label>
+          <FlatList
+            ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
+            data={completedItemList}
+            renderItem={({ item }) => (
+              <CompletedItem item={item} />
+            )}
+          />
+        </View>
       </View>
-      <View>
-        <Label style={[styles.label, styles.sectionTwo]}>Completed</Label>
-        <FlatList
-          ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
-          data={completedItemList}
-          renderItem={({ item }) => (
-            <CompletedItem item={item} />
-          )}
-        />
-      </View>
-    </View>
+    </ScrollView>
   );
 };
 
