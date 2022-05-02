@@ -26,7 +26,7 @@ const ItemCard = ({ item }: ItemCardTypes) => {
         <View style={styles.cardTopRow}>
           <Text style={styles.itemName}>{item.name}</Text>
           <Text style={styles.itemName}>
-            {item.distance === "? mi" ? "2 mi" : item.distance}
+            {item.distance === "? mi" ? "3 mi" : item.distance}
           </Text>
         </View>
         <View style={styles.tagContainer}>
